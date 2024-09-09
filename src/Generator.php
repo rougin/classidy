@@ -16,6 +16,12 @@ class Generator
      */
     public function make(ClassFile $class)
     {
-        return '';
+        $file = __DIR__ . '/Template.php';
+
+        $file = new Content($file);
+
+        $file->replace('Template', $class->getName());
+
+        return $file;
     }
 }
