@@ -10,6 +10,11 @@ namespace Rougin\Classidy;
 class ClassFile
 {
     /**
+     * @var string|null
+     */
+    protected $extends;
+
+    /**
      * @var string
      */
     protected $name;
@@ -32,5 +37,25 @@ class ClassFile
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $extends
+     *
+     * @return self
+     */
+    public function extends($extends)
+    {
+        $this->extends = $extends;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getExtends()
+    {
+        return $this->extends;
     }
 }

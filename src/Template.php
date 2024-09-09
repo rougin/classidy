@@ -2,6 +2,8 @@
 
 namespace Rougin\Classidy;
 
+// [IMPORTS]
+
 /**
  * @package Classidy
  *
