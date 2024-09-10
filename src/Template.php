@@ -12,6 +12,5 @@ namespace Rougin\Classidy;
 class Template
 {
     // [PROPERTIES]
-
     // [METHODS]
 }

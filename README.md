@@ -18,8 +18,54 @@ $ composer require rougin/classidy
 
 ## Basic Usage
 
-> [!WARNING]
-> In progress.
+``` php
+// index.php
+
+use Rougin\Classidy\ClassFile;
+use Rougin\Classidy\Generator;
+use Rougin\Classidy\Method;
+
+$generator = new Generator;
+
+$class = new ClassFile;
+
+$class->setPackage('Slytherin');
+$class->setAuthor('Rougin Gutib', 'rougingutib@gmail.com');
+$class->setName('Greet');
+
+$method = new Method('greet');
+$method->setCode(function ($lines)
+{
+    $lines[] = "return 'Hello world!';";
+
+    return $lines;
+});
+
+$class->addMethod($method);
+
+echo $generator->make($class);
+```
+
+``` bash
+$ php index.php
+
+<?php
+
+namespace Rougin\Classidy;
+
+/**
+ * @package Slytherin
+ *
+ * @author Rougin Gutib <rougingutib@gmail.com>
+ */
+class Greet
+{
+    public function greet()
+    {
+        return 'Hello world!';
+    }
+}
+```
 
 ## Changelog
 

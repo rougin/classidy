@@ -48,7 +48,7 @@ class Content
                 {
                     unset($lines[$index]);
 
-                    if ($text === '// [IMPORTS]' || $text === '// [METHODS]')
+                    if ($text === '// [IMPORTS]')
                     {
                         unset($lines[$index - 1]);
                     }

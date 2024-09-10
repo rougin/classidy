@@ -20,7 +20,7 @@ class ClassFile
     protected $extends;
 
     /**
-     * @var array<string, callable>
+     * @var \Rougin\Classidy\Method[]
      */
     protected $methods = array();
 
@@ -35,14 +35,13 @@ class ClassFile
     protected $package = null;
 
     /**
-     * @param string   $name
-     * @param callable $method
+     * @param \Rougin\Classidy\Method $method
      *
      * @return self
      */
-    public function addMethod($name, $method)
+    public function addMethod(Method $method)
     {
-        $this->methods[$name] = $method;
+        $this->methods[] = $method;
 
         return $this;
     }
@@ -84,7 +83,7 @@ class ClassFile
     }
 
     /**
-     * @return array<string, callable>
+     * @return \Rougin\Classidy\Method[]
      */
     public function getMethods()
     {

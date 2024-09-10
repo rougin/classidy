@@ -31,20 +31,23 @@ class Generator
 
         if ($class->getPackage())
         {
-            $package = 'Classidy';
-            $file->replace($package, $class->getPackage());
+            $package = '@package Classidy';
+            $text = '@package ' . $class->getPackage();
+            $file->replace($package, $text);
         }
 
         $tab = '    ';
         $lines = array();
 
-        foreach ($class->getMethods() as $name => $method)
+        foreach ($class->getMethods() as $method)
         {
+            $name = $method->getName();
+
             $lines[] = $tab . 'public function ' . $name . '()';
             $lines[] = $tab . '{';
 
             /** @var string[] */
-            $items = $method(array());
+            $items = $method->getCode();
 
             foreach ($items as $item)
             {
