@@ -30,7 +30,33 @@ class Content
      */
     public function __toString()
     {
-        return $this->file;
+        $file = $this->file;
+
+        $lines = explode("\n", $file);
+
+        $texts = array('// [IMPORTS]');
+
+        $texts[] = '// [METHODS]';
+
+        $texts[] = '// [PROPERTIES]';
+
+        foreach ($lines as $index => $line)
+        {
+            foreach ($texts as $text)
+            {
+                if (strpos($line, $text) !== false)
+                {
+                    unset($lines[$index]);
+
+                    if ($text === '// [IMPORTS]' || $text === '// [METHODS]')
+                    {
+                        unset($lines[$index - 1]);
+                    }
+                }
+            }
+        }
+
+        return implode(PHP_EOL, $lines);
     }
 
     /**
