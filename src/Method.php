@@ -10,9 +10,9 @@ namespace Rougin\Classidy;
 class Method
 {
     /**
-     * @var array<string, string>[]
+     * @var \Rougin\Classidy\Argument[]
      */
-    protected $arguments = array();
+    protected $args = array();
 
     /**
      * @var callable
@@ -25,6 +25,16 @@ class Method
     protected $name;
 
     /**
+     * @var string
+     */
+    protected $return = 'void';
+
+    /**
+     * @var string|null
+     */
+    protected $text = null;
+
+    /**
      * @param string $name
      */
     public function __construct($name)
@@ -33,19 +43,63 @@ class Method
     }
 
     /**
-     * @param string $name
-     * @param string $datatype
+     * @param string  $name
+     * @param boolean $null
      *
      * @return self
      */
-    public function addArgument($name, $datatype)
+    public function addBooleanArgument($name, $null = false)
     {
-        $item = array('name' => $name);
-        $item['datatype'] = $datatype;
-
-        $this->arguments[] = $item;
+        $this->args[] = new Argument($name, Argument::TYPE_BOOLEAN, $null);
 
         return $this;
+    }
+
+    /**
+     * @param string  $name
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addFloatArgument($name, $null = false)
+    {
+        $this->args[] = new Argument($name, Argument::TYPE_FLOAT, $null);
+
+        return $this;
+    }
+
+    /**
+     * @param string  $name
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addIntegerArgument($name, $null = false)
+    {
+        $this->args[] = new Argument($name, Argument::TYPE_INTEGER, $null);
+
+        return $this;
+    }
+
+    /**
+     * @param string  $name
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addStringArgument($name, $null = false)
+    {
+        $this->args[] = new Argument($name, Argument::TYPE_STRING, $null);
+
+        return $this;
+    }
+
+    /**
+     * @return \Rougin\Classidy\Argument[]
+     */
+    public function getArguments()
+    {
+        return $this->args;
     }
 
     /**
@@ -64,6 +118,22 @@ class Method
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getReturn()
+    {
+        return $this->return;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getText()
+    {
+        return $this->text;
     }
 
     /**
@@ -86,6 +156,47 @@ class Method
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @param string $return
+     *
+     * @return self
+     */
+    public function setReturn($return)
+    {
+        $this->return = $return;
+
+        return $this;
+    }
+
+    /**
+     * @param string $text
+     *
+     * @return self
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
+
+        return $this;
+    }
+
+    /**
+     * @param  mixed $default
+     * @return self
+     */
+    public function withDefaultValue($default)
+    {
+        $last = count($this->args) - 1;
+
+        $argument = $this->args[$last];
+
+        $argument->setDefaultValue($default);
+
+        $this->args[$last] = $argument;
 
         return $this;
     }
