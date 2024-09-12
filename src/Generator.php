@@ -43,6 +43,8 @@ class Generator
 
         $lines = array();
 
+        $eval = new Evaluator($this->tab);
+
         foreach ($class->getMethods() as $method)
         {
             $name = (string) $method->getName();
@@ -55,12 +57,14 @@ class Generator
             $lines[] = 'public function ' . $name . '(' . $args . ')';
             $lines[] = '{';
 
-            /** @var string[] */
-            $items = $method->getCode();
-
-            foreach ($items as $item)
+            if ($code = $method->getCode())
             {
-                $lines[] = $this->tab . $item;
+                $items = $eval->evaluate($code);
+
+                foreach ($items as $item)
+                {
+                    $lines[] = $this->tab . $item;
+                }
             }
 
             $lines[] = '}';

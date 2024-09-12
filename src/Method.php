@@ -15,9 +15,9 @@ class Method
     protected $args = array();
 
     /**
-     * @var callable
+     * @var callable|null
      */
-    protected $code;
+    protected $code = null;
 
     /**
      * @var string
@@ -103,13 +103,11 @@ class Method
     }
 
     /**
-     * @return string[]
+     * @return callable|null
      */
     public function getCode()
     {
-        $code = $this->code;
-
-        return $code(array());
+        return $this->code;
     }
 
     /**
@@ -185,7 +183,8 @@ class Method
     }
 
     /**
-     * @param  mixed $default
+     * @param mixed $default
+     *
      * @return self
      */
     public function withDefaultValue($default)

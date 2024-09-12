@@ -130,6 +130,7 @@ class Argument
 
     /**
      * @param mixed $default
+     *
      * @return self
      */
     public function setDefaultValue($default)
