@@ -12,6 +12,111 @@ class ClassTest extends Testcase
     /**
      * @return void
      */
+    public function test_argument_as_nullable()
+    {
+        $expected = $this->find('WithNullArg');
+
+        $class = $this->newClass('WithNullArg');
+
+        $method = new Method('hello');
+        $method->setReturn('string');
+        $method->addStringArgument('name', true);
+
+        $method->setCodeEval(function ($name = null)
+        {
+            if ($name)
+            {
+                return 'Hello ' . $name . '!';
+            }
+
+            return 'Hello world!';
+        });
+
+        $actual = $this->make($class->addMethod($method));
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_class_with_empty_construct()
+    {
+        $expected = $this->find('WithEmptyConstruct');
+
+        $class = $this->newClass('WithEmptyConstruct');
+
+        $actual = $this->make($class->setConstruct());
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_class_with_extends()
+    {
+        $expected = $this->find('WithExtends');
+
+        $class = $this->newClass('WithExtends');
+
+        $parent = 'Rougin\Classidy\Fixture\Classes\WithMethod';
+        $class->extendsTo($parent);
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_class_with_extend_from_other_namespace()
+    {
+        $expected = $this->find('WithSeparateExtend');
+
+        $class = $this->newClass('WithSeparateExtend');
+
+        $class->extendsTo('Rougin\Classidy\Template');
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_class_with_many_methods()
+    {
+        $expected = $this->find('WithManyMethods');
+
+        $class = $this->newClass('WithManyMethods');
+
+        $method = new Method('hello');
+        $method->setReturn('string');
+        $method->setCodeEval(function ()
+        {
+            return 'Hello ' . $this->name() . '!';
+        });
+        $class->addMethod($method);
+
+        $method = new Method('name');
+        $method->setReturn('string');
+        $method->setCodeEval(function ()
+        {
+            return 'world';
+        });
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
     public function test_class_with_method()
     {
         $expected = $this->find('WithMethod');
@@ -127,78 +232,6 @@ class ClassTest extends Testcase
         });
 
         $actual = $this->make($class->addMethod($method));
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @return void
-     */
-    public function test_argument_as_nullable()
-    {
-        $expected = $this->find('WithNullArg');
-
-        $class = $this->newClass('WithNullArg');
-
-        $method = new Method('hello');
-        $method->setReturn('string');
-        $method->addStringArgument('name', true);
-
-        $method->setCodeEval(function ($name = null)
-        {
-            if ($name)
-            {
-                return 'Hello ' . $name . '!';
-            }
-
-            return 'Hello world!';
-        });
-
-        $actual = $this->make($class->addMethod($method));
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @return void
-     */
-    public function test_class_with_empty_construct()
-    {
-        $expected = $this->find('WithEmptyConstruct');
-
-        $class = $this->newClass('WithEmptyConstruct');
-
-        $actual = $this->make($class->setConstruct());
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @return void
-     */
-    public function test_class_with_many_methods()
-    {
-        $expected = $this->find('WithManyMethods');
-
-        $class = $this->newClass('WithManyMethods');
-
-        $method = new Method('hello');
-        $method->setReturn('string');
-        $method->setCodeEval(function ()
-        {
-            return 'Hello ' . $this->name() . '!';
-        });
-        $class->addMethod($method);
-
-        $method = new Method('name');
-        $method->setReturn('string');
-        $method->setCodeEval(function ()
-        {
-            return 'world';
-        });
-        $class->addMethod($method);
-
-        $actual = $this->make($class);
 
         $this->assertEquals($expected, $actual);
     }

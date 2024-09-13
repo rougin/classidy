@@ -15,9 +15,14 @@ class ClassFile
     protected $author = null;
 
     /**
-     * @var string|null
+     * @var class-string|null
      */
     protected $extends;
+
+    /**
+     * @var class-string[]
+     */
+    protected $imports = array();
 
     /**
      * @var \Rougin\Classidy\Method[]
@@ -52,15 +57,27 @@ class ClassFile
     }
 
     /**
-     * @codeCoverageIgnore
-     *
-     * @param string $extends
+     * @param class-string $extends
      *
      * @return self
      */
     public function extendsTo($extends)
     {
-        $this->extends = $extends;
+        $ref = new \ReflectionClass($extends);
+
+        $parentNamespace = $ref->getNamespaceName();
+
+        $namespace = $this->getNamespace();
+
+        if ($parentNamespace !== $namespace)
+        {
+            $this->importClass($extends);
+        }
+
+        /** @var class-string */
+        $shorten = $ref->getShortName();
+
+        $this->extends = $shorten;
 
         return $this;
     }
@@ -74,21 +91,19 @@ class ClassFile
     }
 
     /**
-     * @return string|null
-     */
-    public function getPackage()
-    {
-        return $this->package;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @return string|null
+     * @return class-string|null
      */
     public function getExtends()
     {
         return $this->extends;
+    }
+
+    /**
+     * @return class-string[]
+     */
+    public function getImports()
+    {
+        return $this->imports;
     }
 
     /**
@@ -113,6 +128,26 @@ class ClassFile
     public function getNamespace()
     {
         return $this->namespace;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPackage()
+    {
+        return $this->package;
+    }
+
+    /**
+     * @param class-string $class
+     *
+     * @return self
+     */
+    public function importClass($class)
+    {
+        $this->imports[] = $class;
+
+        return $this;
     }
 
     /**

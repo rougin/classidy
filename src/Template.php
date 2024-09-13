@@ -9,7 +9,7 @@ namespace Rougin\Classidy;
  *
  * @author Rougin Gutib <rougingutib@gmail.com>
  */
-class Template
+class Template /** extends */ /** implements */
 {
     // [PROPERTIES]
     // [METHODS]

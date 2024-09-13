@@ -10,6 +10,16 @@ namespace Rougin\Classidy;
 class Generator
 {
     /**
+     * @var \Rougin\Classidy\Evaluator
+     */
+    protected $eval;
+
+    /**
+     * @var class-string[]
+     */
+    protected $imports = array();
+
+    /**
      * @var string
      */
     protected $tab = '    ';
@@ -30,6 +40,11 @@ class Generator
             $file = $this->setNamespace($file, $namespace);
         }
 
+        if ($extends = $class->getExtends())
+        {
+            $file = $this->setExtends($file, $extends);
+        }
+
         if ($author = $class->getAuthor())
         {
             $file = $this->setAuthor($file, $author);
@@ -40,9 +55,14 @@ class Generator
             $file = $this->setPackage($file, $package);
         }
 
+        if ($imports = $class->getImports())
+        {
+            $file = $this->setImports($file, $imports);
+        }
+
         $lines = array();
 
-        $eval = new Evaluator($this->tab);
+        $this->eval = new Evaluator($this->tab);
 
         $methods = $class->getMethods();
 
@@ -58,32 +78,7 @@ class Generator
             $lines[] = 'public function ' . $name . '(' . $args . ')';
             $lines[] = '{';
 
-            if ($code = $method->getCode())
-            {
-                if ($method->forEval())
-                {
-                    $items = $eval->evaluate($code);
-                }
-                else
-                {
-                    /** @var string[] */
-                    $items = $code(array());
-                }
-
-                foreach ($items as $item)
-                {
-                    // Do not add a tab if an empty line ---
-                    if (empty($item))
-                    {
-                        $lines[] = '';
-
-                        continue;
-                    }
-                    // -------------------------------------
-
-                    $lines[] = $this->tab . $item;
-                }
-            }
+            $lines = $this->setCode($lines, $method);
 
             $lines[] = '}';
 
@@ -103,6 +98,11 @@ class Generator
             // -------------------------------------
 
             $lines[$index] = $this->tab . $line;
+        }
+
+        if (count($lines) === 0)
+        {
+            return $file;
         }
 
         $method = $this->tab . '// [METHODS]';
@@ -171,6 +171,46 @@ class Generator
     protected function setClassName(Content $file, $name)
     {
         return $file->replace('Template', $name);
+    }
+
+    /**
+     * @param string[]                $lines
+     * @param \Rougin\Classidy\Method $method
+     *
+     * @return string[]
+     */
+    protected function setCode($lines, Method $method)
+    {
+        if (! $code = $method->getCode())
+        {
+            return $lines;
+        }
+
+        if ($method->forEval())
+        {
+            $items = $this->eval->evaluate($code);
+        }
+        else
+        {
+            /** @var string[] */
+            $items = $code(array());
+        }
+
+        foreach ($items as $item)
+        {
+            // Do not add a tab if an empty line ---
+            if (empty($item))
+            {
+                $lines[] = '';
+
+                continue;
+            }
+            // -------------------------------------
+
+            $lines[] = $this->tab . $item;
+        }
+
+        return $lines;
     }
 
     /**
@@ -254,6 +294,35 @@ class Generator
         $lines[] = ' */';
 
         return $lines;
+    }
+
+    /**
+     * @param \Rougin\Classidy\Content $file
+     * @param class-string             $extends
+     *
+     * @return \Rougin\Classidy\Content
+     */
+    protected function setExtends(Content $file, $extends)
+    {
+        return $file->replace(' /** extends */', ' extends ' . $extends);
+    }
+
+    /**
+     * @param \Rougin\Classidy\Content $file
+     * @param class-string[]           $imports
+     *
+     * @return \Rougin\Classidy\Content
+     */
+    protected function setImports(Content $file, $imports)
+    {
+        foreach ($imports as $index => $item)
+        {
+            $imports[$index] = 'use ' . $item . ';';
+        }
+
+        $import = implode(PHP_EOL, $imports);
+
+        return $file->replace('// [IMPORTS]', $import);
     }
 
     /**
