@@ -65,29 +65,31 @@ class Argument
     {
         $type = '';
 
-        if ($this->type === self::TYPE_STRING)
+        if ($this->getType() === self::TYPE_STRING)
         {
             $type = 'string';
         }
 
-        if ($this->type === self::TYPE_INTEGER)
+        if ($this->getType() === self::TYPE_INTEGER)
         {
             $type = 'integer';
         }
 
-        if ($this->type === self::TYPE_BOOLEAN)
+        if ($this->getType() === self::TYPE_BOOLEAN)
         {
             $type = 'boolean';
         }
 
-        if ($this->type === self::TYPE_FLOAT)
+        if ($this->getType() === self::TYPE_FLOAT)
         {
             $type = 'float';
         }
 
-        if ($this->type === self::TYPE_CLASS)
+        if ($this->getType() === self::TYPE_CLASS)
         {
+            // @codeCoverageIgnoreStart
             $type = $this->class;
+            // @codeCoverageIgnoreEnd
         }
 
         return $type;

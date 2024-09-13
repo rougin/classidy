@@ -41,20 +41,28 @@ class Evaluator
 
         $lines = array();
 
-        for ($i = $ref->getStartLine(); $i < $ref->getEndLine(); $i++)
+        // Return the initial string position of entire callback ---
+        $prev = $items[$ref->getStartLine() - 1];
+
+        $index = $this->getStartIndex($prev);
+        // ---------------------------------------------------------
+
+        $start = $ref->getStartLine();
+        $end = $ref->getEndLine();
+
+        for ($i = $start; $i < $end; $i++)
         {
-            $parsed = $this->parseLine($items[$i]);
+            $parsed = $this->parseLine($items[$i], $index);
 
             // Always skip the first and last lines of a callback ---
-            $isFirst = $i === $ref->getStartLine();
-            $isLast = $i === ($ref->getEndLine() - 1);
-            $isEmpty = $parsed === false || $parsed === "\n";
+            $isFirst = $i === $start;
+            $isLast = $i === ($end - 1);
 
-            if (($isFirst || $isLast) && $isEmpty)
+            if (($isFirst || $isLast) && ! $parsed)
             {
                 continue;
             }
-            // -------------------------------------------------------
+            // ------------------------------------------------------
 
             $lines[] = $parsed;
         }
@@ -65,13 +73,29 @@ class Evaluator
     /**
      * @param string $line
      *
+     * @return integer
+     */
+    protected function getStartIndex($line)
+    {
+        $result = preg_match('/^\s*(\S)/m', $line, $matches);
+
+        /** @var integer */
+        return $result === false ? 0 : strpos($line, $matches[1]);
+    }
+
+    /**
+     * @param string  $line
+     * @param integer $start
+     *
      * @return string
      */
-    protected function parseLine($line)
+    protected function parseLine($line, $start = 0)
     {
+        $line = substr($line, $start, strlen($line) - 1);
+
         $spaces = strlen($this->tab);
 
-        $line = str_replace(PHP_EOL, '', $line);
+        $line = rtrim(str_replace(PHP_EOL, '', $line));
 
         $length = strlen($line);
 

@@ -20,19 +20,24 @@ class Method
     protected $code = null;
 
     /**
+     * @var string|null
+     */
+    protected $comment = null;
+
+    /**
+     * @var boolean
+     */
+    protected $eval = false;
+
+    /**
      * @var string
      */
     protected $name;
 
     /**
-     * @var string
-     */
-    protected $return = 'void';
-
-    /**
      * @var string|null
      */
-    protected $text = null;
+    protected $return = null;
 
     /**
      * @param string $name
@@ -95,6 +100,14 @@ class Method
     }
 
     /**
+     * @return boolean
+     */
+    public function forEval()
+    {
+        return $this->eval;
+    }
+
+    /**
      * @return \Rougin\Classidy\Argument[]
      */
     public function getArguments()
@@ -111,6 +124,14 @@ class Method
     }
 
     /**
+     * @return string|null
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
      * @return string
      */
     public function getName()
@@ -119,7 +140,7 @@ class Method
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getReturn()
     {
@@ -127,11 +148,17 @@ class Method
     }
 
     /**
-     * @return string|null
+     * @param callable $code
+     *
+     * @return self
      */
-    public function getText()
+    public function setCodeEval($code)
     {
-        return $this->text;
+        $this->code = $code;
+
+        $this->eval = true;
+
+        return $this;
     }
 
     /**
@@ -139,9 +166,23 @@ class Method
      *
      * @return self
      */
-    public function setCode($code)
+    public function setCodeLine($code)
     {
         $this->code = $code;
+
+        $this->eval = false;
+
+        return $this;
+    }
+
+    /**
+     * @param string $comment
+     *
+     * @return self
+     */
+    public function setComment($comment)
+    {
+        $this->comment = $comment;
 
         return $this;
     }
@@ -166,18 +207,6 @@ class Method
     public function setReturn($return)
     {
         $this->return = $return;
-
-        return $this;
-    }
-
-    /**
-     * @param string $text
-     *
-     * @return self
-     */
-    public function setText($text)
-    {
-        $this->text = $text;
 
         return $this;
     }

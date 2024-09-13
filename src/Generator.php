@@ -21,31 +21,32 @@ class Generator
      */
     public function make(ClassFile $class)
     {
-        $file = __DIR__ . '/Template.php';
+        $file = $this->getTemplate();
 
-        $file = new Content($file);
+        $file = $this->setClassName($file, $class->getName());
 
-        $name = 'Template';
-        $file->replace($name, $class->getName());
-
-        if ($class->getAuthor())
+        if ($namespace = $class->getNamespace())
         {
-            $author = 'Rougin Gutib <rougingutib@gmail.com>';
-            $file->replace($author, $class->getAuthor());
+            $file = $this->setNamespace($file, $namespace);
         }
 
-        if ($class->getPackage())
+        if ($author = $class->getAuthor())
         {
-            $package = '@package Classidy';
-            $text = '@package ' . $class->getPackage();
-            $file->replace($package, $text);
+            $file = $this->setAuthor($file, $author);
+        }
+
+        if ($package = $class->getPackage())
+        {
+            $file = $this->setPackage($file, $package);
         }
 
         $lines = array();
 
         $eval = new Evaluator($this->tab);
 
-        foreach ($class->getMethods() as $method)
+        $methods = $class->getMethods();
+
+        foreach ($methods as $index => $method)
         {
             $name = (string) $method->getName();
 
@@ -59,19 +60,48 @@ class Generator
 
             if ($code = $method->getCode())
             {
-                $items = $eval->evaluate($code);
+                if ($method->forEval())
+                {
+                    $items = $eval->evaluate($code);
+                }
+                else
+                {
+                    /** @var string[] */
+                    $items = $code(array());
+                }
 
                 foreach ($items as $item)
                 {
+                    // Do not add a tab if an empty line ---
+                    if (empty($item))
+                    {
+                        $lines[] = '';
+
+                        continue;
+                    }
+                    // -------------------------------------
+
                     $lines[] = $this->tab . $item;
                 }
             }
 
             $lines[] = '}';
+
+            if (array_key_exists($index + 1, $methods))
+            {
+                $lines[] = '';
+            }
         }
 
         foreach ($lines as $index => $line)
         {
+            // Do not add a tab if an empty line ---
+            if (empty($line))
+            {
+                continue;
+            }
+            // -------------------------------------
+
             $lines[$index] = $this->tab . $line;
         }
 
@@ -80,6 +110,14 @@ class Generator
         $file->replace($method, $result);
 
         return $file;
+    }
+
+    /**
+     * @return \Rougin\Classidy\Content
+     */
+    protected function getTemplate()
+    {
+        return new Content(__DIR__ . '/Template.php');
     }
 
     /**
@@ -114,22 +152,55 @@ class Generator
     }
 
     /**
+     * @param \Rougin\Classidy\Content $file
+     * @param string                   $author
+     *
+     * @return \Rougin\Classidy\Content
+     */
+    protected function setAuthor(Content $file, $author)
+    {
+        return $file->replace('Rougin Gutib <rougingutib@gmail.com>', $author);
+    }
+
+    /**
+     * @param \Rougin\Classidy\Content $file
+     * @param string                   $name
+     *
+     * @return \Rougin\Classidy\Content
+     */
+    protected function setClassName(Content $file, $name)
+    {
+        return $file->replace('Template', $name);
+    }
+
+    /**
      * @param string[]                $lines
      * @param \Rougin\Classidy\Method $method
      *
      * @return string[]
      */
-    public function setComments($lines, Method $method)
+    protected function setComments($lines, Method $method)
     {
         $args = $method->getArguments();
 
+        $comment = $method->getComment();
+
+        $return = $method->getReturn();
+
+        // Criteria for not putting a comment ------------
+        if (! $comment && count($args) === 0 && ! $return)
+        {
+            return $lines;
+        }
+        // -----------------------------------------------
+
         $lines[] = '/**';
 
-        if ($text = $method->getText())
+        if ($comment = $method->getComment())
         {
-            $lines[] = ' * ' . $text;
+            $lines[] = ' * ' . $comment;
 
-            if (count($args) > 0)
+            if (count($args) > 0 || $return)
             {
                 $lines[] = ' *';
             }
@@ -175,9 +246,35 @@ class Generator
             $lines[] = ' *';
         }
 
-        $lines[] = ' * @return ' . $method->getReturn();
+        if ($return)
+        {
+            $lines[] = ' * @return ' . $return;
+        }
+
         $lines[] = ' */';
 
         return $lines;
+    }
+
+    /**
+     * @param \Rougin\Classidy\Content $file
+     * @param string                   $namespace
+     *
+     * @return \Rougin\Classidy\Content
+     */
+    protected function setNamespace(Content $file, $namespace)
+    {
+        return $file->replace('namespace Rougin\Classidy', 'namespace ' . $namespace);
+    }
+
+    /**
+     * @param \Rougin\Classidy\Content $file
+     * @param string                   $package
+     *
+     * @return \Rougin\Classidy\Content
+     */
+    protected function setPackage(Content $file, $package)
+    {
+        return $file->replace('@package Classidy', '@package ' . $package);
     }
 }

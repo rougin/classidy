@@ -32,6 +32,11 @@ class ClassFile
     /**
      * @var string|null
      */
+    protected $namespace = null;
+
+    /**
+     * @var string|null
+     */
     protected $package = null;
 
     /**
@@ -47,6 +52,8 @@ class ClassFile
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @param string $extends
      *
      * @return self
@@ -75,6 +82,8 @@ class ClassFile
     }
 
     /**
+     * @codeCoverageIgnore
+     *
      * @return string|null
      */
     public function getExtends()
@@ -99,6 +108,14 @@ class ClassFile
     }
 
     /**
+     * @return string|null
+     */
+    public function getNamespace()
+    {
+        return $this->namespace;
+    }
+
+    /**
      * @param string      $name
      * @param string|null $email
      *
@@ -117,6 +134,16 @@ class ClassFile
     }
 
     /**
+     * @return self
+     */
+    public function setConstruct()
+    {
+        $this->methods[] = new Method('__construct');
+
+        return $this;
+    }
+
+    /**
      * @param string $name
      *
      * @return self
@@ -124,6 +151,18 @@ class ClassFile
     public function setName($name)
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @param string $namespace
+     *
+     * @return self
+     */
+    public function setNamespace($namespace)
+    {
+        $this->namespace = $namespace;
 
         return $this;
     }
