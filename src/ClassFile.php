@@ -58,7 +58,7 @@ class ClassFile
      *
      * @return self
      */
-    public function extends($extends)
+    public function extendsTo($extends)
     {
         $this->extends = $extends;
 
