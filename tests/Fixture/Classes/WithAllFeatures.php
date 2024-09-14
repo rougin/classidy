@@ -20,4 +20,14 @@ class WithAllFeatures extends WithMethod implements Classable
     {
         return 'Hello ' . $name . '!';
     }
+
+    /**
+     * @return string
+     */
+    public function sample()
+    {
+        $text = 'text';
+
+        return 'This is a sample ' . $text;
+    }
 }

@@ -25,11 +25,11 @@ class Generator
     protected $tab = '    ';
 
     /**
-     * @param \Rougin\Classidy\ClassFile $class
+     * @param \Rougin\Classidy\Classidy $class
      *
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
-    public function make(ClassFile $class)
+    public function make(Classidy $class)
     {
         $file = $this->getTemplate();
 
@@ -118,11 +118,11 @@ class Generator
     }
 
     /**
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
     protected function getTemplate()
     {
-        return new Content(__DIR__ . '/Template.php');
+        return new Output(__DIR__ . '/Template.php');
     }
 
     /**
@@ -168,23 +168,23 @@ class Generator
     }
 
     /**
-     * @param \Rougin\Classidy\Content $file
-     * @param string                   $author
+     * @param \Rougin\Classidy\Output $file
+     * @param string                  $author
      *
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
-    protected function setAuthor(Content $file, $author)
+    protected function setAuthor(Output $file, $author)
     {
         return $file->replace('Rougin Gutib <rougingutib@gmail.com>', $author);
     }
 
     /**
-     * @param \Rougin\Classidy\Content $file
-     * @param string                   $name
+     * @param \Rougin\Classidy\Output $file
+     * @param string                  $name
      *
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
-    protected function setClassName(Content $file, $name)
+    protected function setClassName(Output $file, $name)
     {
         return $file->replace('Template', $name);
     }
@@ -318,23 +318,23 @@ class Generator
     }
 
     /**
-     * @param \Rougin\Classidy\Content $file
-     * @param class-string             $extends
+     * @param \Rougin\Classidy\Output $file
+     * @param class-string            $extends
      *
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
-    protected function setExtends(Content $file, $extends)
+    protected function setExtends(Output $file, $extends)
     {
         return $file->replace(' /** extends */', ' extends ' . $extends);
     }
 
     /**
-     * @param \Rougin\Classidy\Content $file
-     * @param class-string[]           $interfaces
+     * @param \Rougin\Classidy\Output $file
+     * @param class-string[]          $interfaces
      *
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
-    protected function setInterfaces(Content $file, $interfaces)
+    protected function setInterfaces(Output $file, $interfaces)
     {
         $text = ' implements ' . implode(', ', $interfaces);
 
@@ -342,12 +342,12 @@ class Generator
     }
 
     /**
-     * @param \Rougin\Classidy\Content $file
-     * @param class-string[]           $imports
+     * @param \Rougin\Classidy\Output $file
+     * @param class-string[]          $imports
      *
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
-    protected function setImports(Content $file, $imports)
+    protected function setImports(Output $file, $imports)
     {
         /** @var string[] */
         $items = array_merge($this->imports, $imports);
@@ -368,23 +368,23 @@ class Generator
     }
 
     /**
-     * @param \Rougin\Classidy\Content $file
-     * @param string                   $namespace
+     * @param \Rougin\Classidy\Output $file
+     * @param string                  $namespace
      *
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
-    protected function setNamespace(Content $file, $namespace)
+    protected function setNamespace(Output $file, $namespace)
     {
         return $file->replace('namespace Rougin\Classidy', 'namespace ' . $namespace);
     }
 
     /**
-     * @param \Rougin\Classidy\Content $file
-     * @param string                   $package
+     * @param \Rougin\Classidy\Output $file
+     * @param string                  $package
      *
-     * @return \Rougin\Classidy\Content
+     * @return \Rougin\Classidy\Output
      */
-    protected function setPackage(Content $file, $package)
+    protected function setPackage(Output $file, $package)
     {
         return $file->replace('@package Classidy', '@package ' . $package);
     }

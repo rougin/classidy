@@ -45,11 +45,11 @@ class Testcase extends Legacy
     }
 
     /**
-     * @param \Rougin\Classidy\ClassFile $class
+     * @param \Rougin\Classidy\Classidy $class
      *
      * @return string
      */
-    protected function make(ClassFile $class)
+    protected function make(Classidy $class)
     {
         $generator = new Generator;
 
@@ -62,11 +62,11 @@ class Testcase extends Legacy
     /**
      * @param string $name
      *
-     * @return \Rougin\Classidy\ClassFile
+     * @return \Rougin\Classidy\Classidy
      */
     protected function newClass($name)
     {
-        $class = new ClassFile;
+        $class = new Classidy;
 
         $namespace = 'Rougin\Classidy\Fixture\Classes';
         $class->setNamespace($namespace);

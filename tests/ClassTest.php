@@ -32,8 +32,21 @@ class ClassTest extends Testcase
         {
             return 'Hello ' . $name . '!';
         });
+        $class->addMethod($method);
 
-        $actual = $this->make($class->addMethod($method));
+        $method = new Method('sample');
+        $method->setReturn('string');
+        $method->setCodeLine(function ($lines)
+        {
+            $lines[] = '$text = \'text\';';
+            $lines[] = '';
+            $lines[] = 'return \'This is a sample \' . $text;';
+
+            return $lines;
+        });
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
 
         $this->assertEquals($expected, $actual);
     }

@@ -7,7 +7,7 @@ namespace Rougin\Classidy;
  *
  * @author Rougin Gutib <rougingutib@gmail.com>
  */
-class Content
+class Output
 {
     /**
      * @var string

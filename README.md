@@ -18,30 +18,42 @@ $ composer require rougin/classidy
 
 ## Basic Usage
 
+Creating a PHP class only requires the `Classidy` and `Generator` classes:
+
 ``` php
 // index.php
 
-use Rougin\Classidy\ClassFile;
+use Rougin\Classidy\Classidy;
 use Rougin\Classidy\Generator;
 use Rougin\Classidy\Method;
 
-$generator = new Generator;
+// ...
 
-$class = new ClassFile;
+// Create a new class definition ---
+$class = new Classidy;
+// ---------------------------------
 
-$class->setPackage('Slytherin');
-$class->setAuthor('Rougin Gutib', 'rougingutib@gmail.com');
+// Define the details of the class ------------
+$class->setNamespace('Acme');
+$class->setPackage('Acme');
+$class->setAuthor('John Doe', 'jdoe@acme.com');
 $class->setName('Greet');
+// --------------------------------------------
 
+// Add a "greet" method in the class ---
 $method = new Method('greet');
 $method->setCodeEval(function ()
 {
     return 'Hello world!';
 });
-
 $class->addMethod($method);
+// -------------------------------------
+
+// Generate the class --------
+$generator = new Generator;
 
 echo $generator->make($class);
+// ---------------------------
 ```
 
 ``` bash
@@ -49,12 +61,12 @@ $ php index.php
 
 <?php
 
-namespace Rougin\Classidy;
+namespace Acme;
 
 /**
- * @package Slytherin
+ * @package Acme
  *
- * @author Rougin Gutib <rougingutib@gmail.com>
+ * @author John Doe <jdoe@acme.com>
  */
 class Greet
 {
