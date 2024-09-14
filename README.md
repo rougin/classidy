@@ -359,9 +359,13 @@ To change a visibility of a property, the methods `asPublic` and `asPrivate` can
 ``` php
 // index.php
 
+// ...
+
 $class->addStringProperty('text')
     ->asPrivate()
     ->withDefaultValue('Hello world!');
+
+// ...
 ```
 
 > [!NOTE]
