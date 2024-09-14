@@ -18,6 +18,8 @@ $ composer require rougin/classidy
 
 ## Basic Usage
 
+### Creating a simple class
+
 Creating a PHP class only requires the `Classidy` and `Generator` classes:
 
 ``` php
@@ -71,6 +73,176 @@ namespace Acme;
 class Greet
 {
     public function greet()
+    {
+        return 'Hello world!';
+    }
+}
+```
+
+### Adding parent class, interfaces
+
+The class can be added with a parent class using `extendsTo`:
+
+``` php
+// index.php
+
+use Acme\Hello\Greeter;
+
+// ...
+
+// Define the details of the class ---
+// ...
+
+$class->extendsTo(Greeter::class);
+
+// ...
+// -----------------------------------
+
+// ...
+```
+
+``` bash
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Greeter;
+
+/**
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet extends Greeter
+{
+    public function greet()
+    {
+        return 'Hello world!';
+    }
+}
+```
+
+> [!NOTE]
+> If the added parent class or interface is not from the same namespace of the class to be generated, `Classidy` will automatically import the said parent class/interface.
+
+For adding interfaces, the `addInterface` method can be used:
+
+``` php
+// index.php
+
+use Acme\Greetable;
+use Acme\Helloable;
+
+// ...
+
+// Define the details of the class ----
+// ...
+
+$class->addInterface(Greetable::class);
+$class->addInterface(Helloable::class);
+
+// ...
+// ------------------------------------
+
+// ...
+```
+
+``` bash
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Greeter;
+
+/**
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet extends Greeter implements Greetable, Helloable
+{
+    public function greet()
+    {
+        return 'Hello world!';
+    }
+}
+```
+
+### Adding methods
+
+Based from the first example, the `addMethod` can be used to add a method to the class:
+
+``` php
+// index.php
+
+// ...
+
+// Add a "greet" method in the class ---
+$method = new Method('greet');
+$method->setCodeEval(function ()
+{
+    return 'Hello world!';
+});
+$class->addMethod($method);
+// -------------------------------------
+
+// ...
+```
+
+To add arguments in a specified method, kindy use the following methods below:
+
+| Method               | Description                                          |
+|----------------------|------------------------------------------------------|
+| `addBooleanArgument` | Adds an argument with a `boolean` as its data type.  |
+| `addClassArgument`   | Adds an argument with the specified class.           |
+| `addFloatArgument`   | Adds an argument with a `float` as its data type.    |
+| `addIntegerArgument` | Adds an argument with an `integer` as its data type. |
+| `addStringArgument`  | Adds an argument with a `string` as its data type.   |
+
+``` php
+// index.php
+
+// ...
+
+$method = new Method('greet');
+$method->addBooleanArgument('shout')
+    ->withDefaultValue(false);
+$method->setReturn('string');
+$method->setCodeEval(function ()
+{
+    return 'Hello world!';
+});
+$class->addMethod($method);
+
+// ...
+```
+
+``` bash
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Greeter;
+
+/**
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet extends Greeter implements Greetable, Helloable
+{
+    /**
+     * @param boolean $shout
+     *
+     * @return string
+     */
+    public function greet($shout = false)
     {
         return 'Hello world!';
     }
