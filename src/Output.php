@@ -55,7 +55,10 @@ class Output
 
         $lines = explode("\n", $file);
 
+        $namespace = 'namespace Rougin\Classidy;';
+
         $texts = array('// [IMPORTS]', '// [CODE]');
+        $texts[] = $namespace;
 
         foreach ($lines as $index => $line)
         {
@@ -68,7 +71,7 @@ class Output
 
                 unset($lines[$index]);
 
-                if ($text === '// [IMPORTS]')
+                if ($text === '// [IMPORTS]' || $text === $namespace)
                 {
                     unset($lines[$index - 1]);
                 }
