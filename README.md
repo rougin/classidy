@@ -79,6 +79,23 @@ class Greet
 }
 ```
 
+The `setCodeLine` method can also be used for specifying code of a method in a line based format. This may be useful in adding conditions in generating code of a method:
+
+``` php
+// index.php
+
+// ...
+
+$method->setCodeEval(function ($lines)
+{
+    $lines[] = "return 'Hello world!';";
+
+    return $lines;
+});
+
+// ...
+```
+
 ### Adding parent class, interfaces
 
 The class can be added with a parent class using `extendsTo`:
@@ -248,6 +265,29 @@ class Greet extends Greeter implements Greetable, Helloable
     }
 }
 ```
+
+A method can also be defined as `protected` or `private`:
+
+``` php
+// index.php
+
+// ...
+
+$method = new Method('greet');
+
+// Set the method as "protected" ---
+$method->asProtected();
+// ---------------------------------
+
+// Set the method as "private" ---
+$method->asPrivate();
+// -------------------------------
+
+// ...
+```
+
+> [!NOTE]
+> By default, all of the specified methods are in `public` visibility.
 
 ## Changelog
 

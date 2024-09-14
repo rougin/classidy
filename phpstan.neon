@@ -5,3 +5,4 @@ parameters:
     - tests
   ignoreErrors:
     - '#^Call to an undefined method Rougin\\Classidy\\ClassTest\:\:name\(\)\.$#'
+    - '#^Call to an undefined method Rougin\\Classidy\\MethodTest\:\:greet\(\)\.$#'

@@ -72,10 +72,12 @@ class Generator
 
             $args = $method->getArguments();
 
+            $visibility = $method->getVisibility();
+
             $args = $this->setArguments($args);
 
             $lines = $this->setComments($lines, $method);
-            $lines[] = 'public function ' . $name . '(' . $args . ')';
+            $lines[] = $visibility . ' function ' . $name . '(' . $args . ')';
             $lines[] = '{';
 
             $lines = $this->setCode($lines, $method);

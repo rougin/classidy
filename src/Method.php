@@ -9,6 +9,12 @@ namespace Rougin\Classidy;
  */
 class Method
 {
+    const VISIBLE_PUBLIC = 0;
+
+    const VISIBLE_PROTECTED = 1;
+
+    const VISIBLE_PRIVATE = 2;
+
     /**
      * @var \Rougin\Classidy\Argument[]
      */
@@ -38,6 +44,11 @@ class Method
      * @var string|null
      */
     protected $return = null;
+
+    /**
+     * @var integer
+     */
+    protected $visible = self::VISIBLE_PUBLIC;
 
     /**
      * @param string $name
@@ -116,6 +127,26 @@ class Method
     }
 
     /**
+     * @return self
+     */
+    public function asProtected()
+    {
+        $this->visible = self::VISIBLE_PROTECTED;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function asPrivate()
+    {
+        $this->visible = self::VISIBLE_PRIVATE;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function forEval()
@@ -161,6 +192,24 @@ class Method
     public function getReturn()
     {
         return $this->return;
+    }
+
+    /**
+     * @return string
+     */
+    public function getVisibility()
+    {
+        if ($this->visible === self::VISIBLE_PRIVATE)
+        {
+            return 'private';
+        }
+
+        if ($this->visible === self::VISIBLE_PROTECTED)
+        {
+            return 'protected';
+        }
+
+        return 'public';
     }
 
     /**
