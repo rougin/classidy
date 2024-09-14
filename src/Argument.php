@@ -20,7 +20,7 @@ class Argument
     const TYPE_CLASS = 4;
 
     /**
-     * @var string
+     * @var class-string|null
      */
     protected $class;
 
@@ -87,9 +87,8 @@ class Argument
 
         if ($this->getType() === self::TYPE_CLASS)
         {
-            // @codeCoverageIgnoreStart
+            /** @var string */
             $type = $this->class;
-            // @codeCoverageIgnoreEnd
         }
 
         return $type;
@@ -104,12 +103,22 @@ class Argument
     }
 
     /**
+     * @return class-string|null
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
      * @return string|null
      */
     public function getDefaultValue()
     {
         /** @var string */
         $parsed = json_encode($this->default);
+
+        $parsed = str_replace('"', '\'', $parsed);
 
         return $parsed !== 'null' ? $parsed : null;
     }
@@ -128,6 +137,18 @@ class Argument
     public function isNull()
     {
         return $this->null;
+    }
+
+    /**
+     * @param class-string $class
+     *
+     * @return self
+     */
+    public function setClass($class)
+    {
+        $this->class = $class;
+
+        return $this;
     }
 
     /**

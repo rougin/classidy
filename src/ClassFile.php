@@ -25,6 +25,11 @@ class ClassFile
     protected $imports = array();
 
     /**
+     * @var class-string[]
+     */
+    protected $interfaces = array();
+
+    /**
      * @var \Rougin\Classidy\Method[]
      */
     protected $methods = array();
@@ -43,6 +48,32 @@ class ClassFile
      * @var string|null
      */
     protected $package = null;
+
+    /**
+     * @param class-string $interface
+     *
+     * @return self
+     */
+    public function addInterface($interface)
+    {
+        $ref = new \ReflectionClass($interface);
+
+        $parentNamespace = $ref->getNamespaceName();
+
+        $namespace = $this->getNamespace();
+
+        if ($parentNamespace !== $namespace)
+        {
+            $this->importClass($interface);
+        }
+
+        /** @var class-string */
+        $shorten = $ref->getShortName();
+
+        $this->interfaces[] = $shorten;
+
+        return $this;
+    }
 
     /**
      * @param \Rougin\Classidy\Method $method
@@ -104,6 +135,14 @@ class ClassFile
     public function getImports()
     {
         return $this->imports;
+    }
+
+    /**
+     * @return class-string[]
+     */
+    public function getInterfaces()
+    {
+        return $this->interfaces;
     }
 
     /**

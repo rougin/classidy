@@ -45,6 +45,11 @@ class Generator
             $file = $this->setExtends($file, $extends);
         }
 
+        if ($interfaces = $class->getInterfaces())
+        {
+            $file = $this->setInterfaces($file, $interfaces);
+        }
+
         if ($author = $class->getAuthor())
         {
             $file = $this->setAuthor($file, $author);
@@ -53,11 +58,6 @@ class Generator
         if ($package = $class->getPackage())
         {
             $file = $this->setPackage($file, $package);
-        }
-
-        if ($imports = $class->getImports())
-        {
-            $file = $this->setImports($file, $imports);
         }
 
         $lines = array();
@@ -86,6 +86,11 @@ class Generator
             {
                 $lines[] = '';
             }
+        }
+
+        if ($imports = $class->getImports())
+        {
+            $file = $this->setImports($file, $imports);
         }
 
         foreach ($lines as $index => $line)
@@ -143,9 +148,20 @@ class Generator
                 $default = ' = null';
             }
 
-            $name = $item->getName();
+            $argument = '$' . $item->getName() . $default;
 
-            $items[] = '$' . $name . $default;
+            if ($class = $item->getClass())
+            {
+                $ref = new \ReflectionClass($class);
+
+                $this->imports[] = $class;
+
+                $name = $ref->getShortName();
+
+                $argument = $name . ' ' . $argument;
+            }
+
+            $items[] = $argument;
         }
 
         return implode(', ', $items);
@@ -246,7 +262,7 @@ class Generator
             }
         }
 
-        // Get the types first to get the longest data type string ---
+        // Get the types, then return the longest data type ---
         $types = array();
 
         $maxTypeLength = 0;
@@ -260,6 +276,11 @@ class Generator
                 $type = $type . '|null';
             }
 
+            if ($item->getClass())
+            {
+                $type = '\\' . $type;
+            }
+
             if (strlen($type) > $maxTypeLength)
             {
                 $maxTypeLength = strlen($type);
@@ -267,7 +288,7 @@ class Generator
 
             $types[$index] = $type;
         }
-        // -----------------------------------------------------------
+        // ----------------------------------------------------
 
         foreach ($args as $index => $item)
         {
@@ -309,18 +330,39 @@ class Generator
 
     /**
      * @param \Rougin\Classidy\Content $file
+     * @param class-string[]           $interfaces
+     *
+     * @return \Rougin\Classidy\Content
+     */
+    protected function setInterfaces(Content $file, $interfaces)
+    {
+        $text = ' implements ' . implode(', ', $interfaces);
+
+        return $file->replace(' /** implements */', $text);
+    }
+
+    /**
+     * @param \Rougin\Classidy\Content $file
      * @param class-string[]           $imports
      *
      * @return \Rougin\Classidy\Content
      */
     protected function setImports(Content $file, $imports)
     {
-        foreach ($imports as $index => $item)
+        /** @var string[] */
+        $items = array_merge($this->imports, $imports);
+        $items = array_values($items);
+
+        foreach ($items as $index => $item)
         {
-            $imports[$index] = 'use ' . $item . ';';
+            $items[$index] = 'use ' . $item . ';';
         }
 
-        $import = implode(PHP_EOL, $imports);
+        // Sort the imports alphabetically ---
+        sort($items);
+        // -----------------------------------
+
+        $import = implode(PHP_EOL, $items);
 
         return $file->replace('// [IMPORTS]', $import);
     }

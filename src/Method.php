@@ -61,6 +61,22 @@ class Method
     }
 
     /**
+     * @param class-string $class
+     * @param string       $name
+     * @param boolean      $null
+     *
+     * @return self
+     */
+    public function addClassArgument($class, $name, $null = false)
+    {
+        $arg = new Argument($name, Argument::TYPE_CLASS, $null);
+
+        $this->args[] = $arg->setClass($class);
+
+        return $this;
+    }
+
+    /**
      * @param string  $name
      * @param boolean $null
      *

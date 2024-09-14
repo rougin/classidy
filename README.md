@@ -6,7 +6,7 @@
 [![Coverage Status][ico-coverage]][link-coverage]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-A package that creates PHP classese using PHP. That's it.
+A package that creates PHP classes using PHP. That's it.
 
 ## Installation
 
@@ -34,11 +34,9 @@ $class->setAuthor('Rougin Gutib', 'rougingutib@gmail.com');
 $class->setName('Greet');
 
 $method = new Method('greet');
-$method->setCode(function ($lines)
+$method->setCodeEval(function ()
 {
-    $lines[] = "return 'Hello world!';";
-
-    return $lines;
+    return 'Hello world!';
 });
 
 $class->addMethod($method);

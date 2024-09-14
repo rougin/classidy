@@ -2,6 +2,8 @@
 
 namespace Rougin\Classidy;
 
+use Rougin\Classidy\Fixture\Classes\WithMethod;
+
 /**
  * @package Classidy
  *
@@ -9,6 +11,57 @@ namespace Rougin\Classidy;
  */
 class ClassTest extends Testcase
 {
+    /**
+     * @return void
+     */
+    public function test_all_features()
+    {
+        $expected = $this->find('WithAllFeatures');
+
+        $class = $this->newClass('WithAllFeatures');
+        $extends = 'Rougin\Classidy\Fixture\Classes\WithMethod';
+        $class->extendsTo($extends);
+        $interface = 'Rougin\Classidy\Fixture\Classable';
+        $class->addInterface($interface);
+
+        $method = new Method('greet');
+        $method->addStringArgument('name')
+            ->withDefaultValue('world');
+        $method->setReturn('string');
+        $method->setCodeEval(function ($name = 'world')
+        {
+            return 'Hello ' . $name . '!';
+        });
+
+        $actual = $this->make($class->addMethod($method));
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_argument_as_class()
+    {
+        $expected = $this->find('WithClassArg');
+
+        $class = $this->newClass('WithClassArg');
+
+        $method = new Method('hello');
+        $method->setReturn('string');
+        $withMethod = 'Rougin\Classidy\Fixture\Classes\WithMethod';
+        $method->addClassArgument($withMethod, 'method');
+
+        $method->setCodeEval(function (WithMethod $method)
+        {
+            return $method->hello();
+        });
+
+        $actual = $this->make($class->addMethod($method));
+
+        $this->assertEquals($expected, $actual);
+    }
+
     /**
      * @return void
      */
@@ -62,6 +115,23 @@ class ClassTest extends Testcase
 
         $parent = 'Rougin\Classidy\Fixture\Classes\WithMethod';
         $class->extendsTo($parent);
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_class_with_interface()
+    {
+        $expected = $this->find('WithInterface');
+
+        $class = $this->newClass('WithInterface');
+
+        $interface = 'Rougin\Classidy\Fixture\Classable';
+        $class->addInterface($interface);
 
         $actual = $this->make($class);
 
