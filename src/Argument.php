@@ -59,6 +59,14 @@ class Argument
     }
 
     /**
+     * @return class-string|null
+     */
+    public function getClass()
+    {
+        return $this->class;
+    }
+
+    /**
      * @return string
      */
     public function getDataType()
@@ -95,22 +103,6 @@ class Argument
     }
 
     /**
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return class-string|null
-     */
-    public function getClass()
-    {
-        return $this->class;
-    }
-
-    /**
      * @return string|null
      */
     public function getDefaultValue()
@@ -121,6 +113,14 @@ class Argument
         $parsed = str_replace('"', '\'', $parsed);
 
         return $parsed !== 'null' ? $parsed : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
     }
 
     /**

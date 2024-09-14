@@ -163,4 +163,41 @@ class ClassTest extends Testcase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @return void
+     */
+    public function test_class_with_property()
+    {
+        $expected = $this->find('WithProperty');
+
+        $class = $this->newClass('WithProperty');
+
+        $class->addIntegerProperty('age', true)
+            ->asPublic();
+
+        $class->addStringProperty('name')
+            ->withDefaultValue('Classidy');
+
+        $name = 'Rougin\Classidy\Fixture\Classes\WithMethod';
+        $class->addClassProperty('with', $name);
+
+        $class->addBooleanProperty('loud')
+            ->asPrivate()
+            ->withDefaultValue(false);
+
+        $class->addFloatProperty('grade');
+
+        $method = new Method('shout');
+        $method->setReturn('boolean');
+        $method->setCodeEval(function ()
+        {
+            return $this->loud;
+        });
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
 }

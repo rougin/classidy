@@ -30,13 +30,32 @@ class Output
      */
     public function __toString()
     {
+        return $this->toString();
+    }
+
+    /**
+     * @param string $search
+     * @param string $text
+     *
+     * @return self
+     */
+    public function replace($search, $text)
+    {
+        $this->file = str_replace($search, $text, $this->file);
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function toString()
+    {
         $file = $this->file;
 
         $lines = explode("\n", $file);
 
-        $texts = array('// [IMPORTS]');
-        $texts[] = '// [METHODS]';
-        $texts[] = '// [PROPERTIES]';
+        $texts = array('// [IMPORTS]', '// [CODE]');
 
         foreach ($lines as $index => $line)
         {
@@ -65,18 +84,5 @@ class Output
         // ----------------------------------------------------
 
         return $class;
-    }
-
-    /**
-     * @param string $search
-     * @param string $text
-     *
-     * @return self
-     */
-    public function replace($search, $text)
-    {
-        $this->file = str_replace($search, $text, $this->file);
-
-        return $this;
     }
 }

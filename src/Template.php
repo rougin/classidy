@@ -11,6 +11,5 @@ namespace Rougin\Classidy;
  */
 class Template /** extends */ /** implements */
 {
-    // [PROPERTIES]
-    // [METHODS]
+    // [CODE]
 }

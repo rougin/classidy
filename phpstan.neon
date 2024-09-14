@@ -4,5 +4,6 @@ parameters:
     - src
     - tests
   ignoreErrors:
+    - '#^Access to an undefined property Rougin\\Classidy\\ClassTest\:\:\$loud\.$#'
     - '#^Call to an undefined method Rougin\\Classidy\\ClassTest\:\:name\(\)\.$#'
     - '#^Call to an undefined method Rougin\\Classidy\\MethodTest\:\:greet\(\)\.$#'

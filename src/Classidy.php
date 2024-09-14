@@ -25,14 +25,14 @@ class Classidy
     protected $imports = array();
 
     /**
-     * @var class-string[]
-     */
-    protected $interfaces = array();
-
-    /**
      * @var \Rougin\Classidy\Method[]
      */
     protected $methods = array();
+
+    /**
+     * @var class-string[]
+     */
+    protected $notions = array();
 
     /**
      * @var string
@@ -48,6 +48,66 @@ class Classidy
      * @var string|null
      */
     protected $package = null;
+
+    /**
+     * @var \Rougin\Classidy\Property[]
+     */
+    protected $props = array();
+
+    /**
+     * @param string  $name
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addBooleanProperty($name, $null = false)
+    {
+        $this->props[] = new Property($name, Property::TYPE_BOOLEAN, $null);
+
+        return $this;
+    }
+
+    /**
+     * @param string       $name
+     * @param class-string $class
+     * @param boolean      $null
+     *
+     * @return self
+     */
+    public function addClassProperty($name, $class, $null = false)
+    {
+        $arg = new Property($name, Property::TYPE_CLASS, $null);
+
+        $this->props[] = $arg->setClass($class);
+
+        return $this;
+    }
+
+    /**
+     * @param string  $name
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addFloatProperty($name, $null = false)
+    {
+        $this->props[] = new Property($name, Property::TYPE_FLOAT, $null);
+
+        return $this;
+    }
+
+    /**
+     * @param string  $name
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addIntegerProperty($name, $null = false)
+    {
+        $this->props[] = new Property($name, Property::TYPE_INTEGER, $null);
+
+        return $this;
+    }
 
     /**
      * @param class-string $interface
@@ -70,7 +130,7 @@ class Classidy
         /** @var class-string */
         $shorten = $ref->getShortName();
 
-        $this->interfaces[] = $shorten;
+        $this->notions[] = $shorten;
 
         return $this;
     }
@@ -83,6 +143,51 @@ class Classidy
     public function addMethod(Method $method)
     {
         $this->methods[] = $method;
+
+        return $this;
+    }
+
+    /**
+     * @param string  $name
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addStringProperty($name, $null = false)
+    {
+        $this->props[] = new Property($name, Property::TYPE_STRING, $null);
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function asPrivate()
+    {
+        $last = count($this->props) - 1;
+
+        $property = $this->props[$last];
+
+        $property->asPrivate();
+
+        $this->props[$last] = $property;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
+    public function asPublic()
+    {
+        $last = count($this->props) - 1;
+
+        $property = $this->props[$last];
+
+        $property->asPublic();
+
+        $this->props[$last] = $property;
 
         return $this;
     }
@@ -142,7 +247,7 @@ class Classidy
      */
     public function getInterfaces()
     {
-        return $this->interfaces;
+        return $this->notions;
     }
 
     /**
@@ -175,6 +280,14 @@ class Classidy
     public function getPackage()
     {
         return $this->package;
+    }
+
+    /**
+     * @return \Rougin\Classidy\Property[]
+     */
+    public function getProperties()
+    {
+        return $this->props;
     }
 
     /**
@@ -249,6 +362,24 @@ class Classidy
     public function setPackage($package)
     {
         $this->package = $package;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $default
+     *
+     * @return self
+     */
+    public function withDefaultValue($default)
+    {
+        $last = count($this->props) - 1;
+
+        $property = $this->props[$last];
+
+        $property->setDefaultValue($default);
+
+        $this->props[$last] = $property;
 
         return $this;
     }

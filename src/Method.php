@@ -72,13 +72,13 @@ class Method
     }
 
     /**
-     * @param class-string $class
      * @param string       $name
+     * @param class-string $class
      * @param boolean      $null
      *
      * @return self
      */
-    public function addClassArgument($class, $name, $null = false)
+    public function addClassArgument($name, $class, $null = false)
     {
         $arg = new Argument($name, Argument::TYPE_CLASS, $null);
 
@@ -127,21 +127,25 @@ class Method
     }
 
     /**
-     * @return self
-     */
-    public function asProtected()
-    {
-        $this->visible = self::VISIBLE_PROTECTED;
-
-        return $this;
-    }
-
-    /**
+     * TODO: Rework as one functionality from Property.
+     *
      * @return self
      */
     public function asPrivate()
     {
         $this->visible = self::VISIBLE_PRIVATE;
+
+        return $this;
+    }
+
+    /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @return self
+     */
+    public function asProtected()
+    {
+        $this->visible = self::VISIBLE_PROTECTED;
 
         return $this;
     }
@@ -195,6 +199,8 @@ class Method
     }
 
     /**
+     * TODO: Rework as one functionality from Property.
+     *
      * @return string
      */
     public function getVisibility()

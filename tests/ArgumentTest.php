@@ -22,8 +22,8 @@ class ArgumentTest extends Testcase
 
         $method = new Method('hello');
         $method->setReturn('string');
-        $withMethod = 'Rougin\Classidy\Fixture\Classes\WithMethod';
-        $method->addClassArgument($withMethod, 'method');
+        $name = 'Rougin\Classidy\Fixture\Classes\WithMethod';
+        $method->addClassArgument('method', $name);
 
         $method->setCodeEval(function (WithMethod $method)
         {

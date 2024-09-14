@@ -289,6 +289,84 @@ $method->asPrivate();
 > [!NOTE]
 > By default, all of the specified methods are in `public` visibility.
 
+### Adding properties
+
+Similiar to adding arguments in a method, adding properties to a class can be done by the following:
+
+| Method               | Description                                         |
+|----------------------|-----------------------------------------------------|
+| `addBooleanProperty` | Adds a property with a `boolean` as its data type.  |
+| `addClassProperty`   | Adds a property with the specified class.           |
+| `addFloatProperty`   | Adds a property with a `float` as its data type.    |
+| `addIntegerProperty` | Adds a property with an `integer` as its data type. |
+| `addStringProperty`  | Adds a property with a `string` as its data type.   |
+
+``` php
+// index.php
+
+// ...
+
+$class->addStringProperty('text')
+    ->withDefaultValue('Hello world!');
+
+// ...
+
+// Modify "greet" method to access "text" property ---
+$method->setCodeEval(function ()
+{
+    return $this->text;
+});
+// ---------------------------------------------------
+
+// ...
+```
+
+``` php
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Greeter;
+
+/**
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet extends Greeter implements Greetable, Helloable
+{
+    /**
+     * @var string
+     */
+    protected $text = 'Hello world!';
+
+    /**
+     * @param boolean $shout
+     *
+     * @return string
+     */
+    public function greet($shout = false)
+    {
+        return $this->text;
+    }
+}
+```
+
+To change a visibility of a property, the methods `asPublic` and `asPrivate` can be used:
+
+``` php
+// index.php
+
+$class->addStringProperty('text')
+    ->asPrivate()
+    ->withDefaultValue('Hello world!');
+```
+
+> [!NOTE]
+> By default, all of the specified properties are in `protected` visibility.
+
 ## Changelog
 
 Please see [CHANGELOG][link-changelog] for more information what has changed recently.

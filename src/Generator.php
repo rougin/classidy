@@ -31,6 +31,8 @@ class Generator
      */
     public function make(Classidy $class)
     {
+        $this->eval = new Evaluator($this->tab);
+
         $file = $this->getTemplate();
 
         $file = $this->setClassName($file, $class->getName());
@@ -62,32 +64,19 @@ class Generator
 
         $lines = array();
 
-        $this->eval = new Evaluator($this->tab);
-
-        $methods = $class->getMethods();
-
-        foreach ($methods as $index => $method)
+        if ($props = $class->getProperties())
         {
-            $name = (string) $method->getName();
+            $lines = $this->setProperties($lines, $props);
+        }
 
-            $args = $method->getArguments();
-
-            $visibility = $method->getVisibility();
-
-            $args = $this->setArguments($args);
-
-            $lines = $this->setComments($lines, $method);
-            $lines[] = $visibility . ' function ' . $name . '(' . $args . ')';
-            $lines[] = '{';
-
-            $lines = $this->setCode($lines, $method);
-
-            $lines[] = '}';
-
-            if (array_key_exists($index + 1, $methods))
+        if ($methods = $class->getMethods())
+        {
+            if (count($props) > 0)
             {
                 $lines[] = '';
             }
+
+            $lines = $this->setMethods($lines, $methods);
         }
 
         if ($imports = $class->getImports())
@@ -112,9 +101,9 @@ class Generator
             return $file;
         }
 
-        $method = $this->tab . '// [METHODS]';
+        $search = $this->tab . '// [CODE]';
         $result = implode("\n", $lines);
-        $file->replace($method, $result);
+        $file->replace($search, $result);
 
         return $file;
     }
@@ -138,6 +127,7 @@ class Generator
 
         foreach ($args as $item)
         {
+            // TODO: Refactor this portion as getDefaultValue() ---
             $default = '';
 
             if ($item->getDefaultValue())
@@ -149,6 +139,7 @@ class Generator
             {
                 $default = ' = null';
             }
+            // ----------------------------------------------------
 
             $argument = '$' . $item->getName() . $default;
 
@@ -271,6 +262,7 @@ class Generator
 
         foreach ($args as $index => $item)
         {
+            // TODO: Refactor this portion as getDataType() ---
             $type = $item->getDataType();
 
             if ($item->isNull())
@@ -282,6 +274,7 @@ class Generator
             {
                 $type = '\\' . $type;
             }
+            // ------------------------------------------------
 
             if (strlen($type) > $maxTypeLength)
             {
@@ -332,19 +325,6 @@ class Generator
 
     /**
      * @param \Rougin\Classidy\Output $file
-     * @param class-string[]          $interfaces
-     *
-     * @return \Rougin\Classidy\Output
-     */
-    protected function setInterfaces(Output $file, $interfaces)
-    {
-        $text = ' implements ' . implode(', ', $interfaces);
-
-        return $file->replace(' /** implements */', $text);
-    }
-
-    /**
-     * @param \Rougin\Classidy\Output $file
      * @param class-string[]          $imports
      *
      * @return \Rougin\Classidy\Output
@@ -371,6 +351,54 @@ class Generator
 
     /**
      * @param \Rougin\Classidy\Output $file
+     * @param class-string[]          $interfaces
+     *
+     * @return \Rougin\Classidy\Output
+     */
+    protected function setInterfaces(Output $file, $interfaces)
+    {
+        $text = ' implements ' . implode(', ', $interfaces);
+
+        return $file->replace(' /** implements */', $text);
+    }
+
+    /**
+     * @param string[]                  $lines
+     * @param \Rougin\Classidy\Method[] $methods
+     *
+     * @return string[]
+     */
+    protected function setMethods($lines, $methods)
+    {
+        foreach ($methods as $index => $method)
+        {
+            $name = (string) $method->getName();
+
+            $args = $method->getArguments();
+
+            $visibility = $method->getVisibility();
+
+            $args = $this->setArguments($args);
+
+            $lines = $this->setComments($lines, $method);
+            $lines[] = $visibility . ' function ' . $name . '(' . $args . ')';
+            $lines[] = '{';
+
+            $lines = $this->setCode($lines, $method);
+
+            $lines[] = '}';
+
+            if (array_key_exists($index + 1, $methods))
+            {
+                $lines[] = '';
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
+     * @param \Rougin\Classidy\Output $file
      * @param string                  $namespace
      *
      * @return \Rougin\Classidy\Output
@@ -389,5 +417,61 @@ class Generator
     protected function setPackage(Output $file, $package)
     {
         return $file->replace('@package Classidy', '@package ' . $package);
+    }
+
+    /**
+     * @param string[]                    $lines
+     * @param \Rougin\Classidy\Property[] $props
+     *
+     * @return string[]
+     */
+    protected function setProperties($lines, $props)
+    {
+        foreach ($props as $index => $item)
+        {
+            // TODO: Refactor this portion as getDataType() ---
+            $type = $item->getDataType();
+
+            if ($item->isNull())
+            {
+                $type = $type . '|null';
+            }
+
+            if ($item->getClass())
+            {
+                $type = '\\' . $type;
+            }
+            // ------------------------------------------------
+
+            $visibility = $item->getVisibility();
+
+            // TODO: Refactor this portion as getDefaultValue() ---
+            $default = '';
+
+            if ($item->getDefaultValue())
+            {
+                $default = ' = ' . $item->getDefaultValue();
+            }
+
+            if ($item->isNull())
+            {
+                $default = ' = null';
+            }
+            // ----------------------------------------------------
+
+            $name = '$' . $item->getName() . $default . ';';
+
+            $lines[] = '/**';
+            $lines[] = ' * @var ' . $type;
+            $lines[] = ' */';
+            $lines[] = $visibility . ' ' . $name;
+
+            if (array_key_exists($index + 1, $props))
+            {
+                $lines[] = '';
+            }
+        }
+
+        return $lines;
     }
 }
