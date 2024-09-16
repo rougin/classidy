@@ -303,6 +303,15 @@ class Classidy
     }
 
     /**
+     * Configures the current class.
+     *
+     * @return void
+     */
+    public function init()
+    {
+    }
+
+    /**
      * @param string      $name
      * @param string|null $email
      *
