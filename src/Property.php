@@ -18,9 +18,26 @@ class Property extends Argument
     const VISIBLE_PRIVATE = 2;
 
     /**
+     * @var boolean
+     */
+    protected $tag = false;
+
+    /**
      * @var integer
      */
     protected $visible = self::VISIBLE_PROTECTED;
+
+    /**
+     * TODO: Rework as one functionality from Method.
+     *
+     * @return self
+     */
+    public function asTag()
+    {
+        $this->tag = true;
+
+        return $this;
+    }
 
     /**
      * TODO: Rework as one functionality from Method.
@@ -64,5 +81,15 @@ class Property extends Argument
         }
 
         return 'public';
+    }
+
+    /**
+     * TODO: Rework as one functionality from Method.
+     *
+     * @return boolean
+     */
+    public function isTag()
+    {
+        return $this->tag;
     }
 }

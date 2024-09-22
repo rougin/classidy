@@ -193,6 +193,22 @@ class Classidy
     }
 
     /**
+     * @return self
+     */
+    public function asTag()
+    {
+        $last = count($this->props) - 1;
+
+        $property = $this->props[$last];
+
+        $property->asTag();
+
+        $this->props[$last] = $property;
+
+        return $this;
+    }
+
+    /**
      * @param class-string $extends
      *
      * @return self

@@ -28,7 +28,9 @@ class MethodTest extends Testcase
             return $lines;
         });
 
-        $actual = $this->make($class->addMethod($method));
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
 
         $this->assertEquals($expected, $actual);
     }
@@ -81,7 +83,37 @@ class MethodTest extends Testcase
             return 'Hello world!';
         });
 
-        $actual = $this->make($class->addMethod($method));
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_method_as_tag()
+    {
+        $expected = $this->find('WithMethodAsTag');
+
+        $class = $this->newClass('WithMethodAsTag');
+
+        $class->addStringProperty('name')->asTag();
+
+        $method = new Method('rating');
+        $method->setReturn('string');
+
+        $method->addFloatArgument('grade')
+            ->asTag();
+
+        $method->addBooleanArgument('passer')
+            ->withDefaultValue(true)
+            ->asTag();
+
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
 
         $this->assertEquals($expected, $actual);
     }
@@ -105,7 +137,9 @@ class MethodTest extends Testcase
             return 'Hello ' . $name . '!';
         });
 
-        $actual = $this->make($class->addMethod($method));
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
 
         $this->assertEquals($expected, $actual);
     }
@@ -133,7 +167,9 @@ class MethodTest extends Testcase
             return 'My grade is ' . $grade . ' and ' . $passed;
         });
 
-        $actual = $this->make($class->addMethod($method));
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
 
         $this->assertEquals($expected, $actual);
     }
@@ -158,7 +194,9 @@ class MethodTest extends Testcase
             return 'My age is ' . $age;
         });
 
-        $actual = $this->make($class->addMethod($method));
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
 
         $this->assertEquals($expected, $actual);
     }

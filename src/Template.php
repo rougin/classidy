@@ -4,11 +4,7 @@ namespace Rougin\Classidy;
 
 // [IMPORTS]
 
-/**
- * @package Classidy
- *
- * @author Rougin Gutib <rougingutib@gmail.com>
- */
+// [DETAILS]
 class Template /** extends */ /** implements */
 {
     // [CODE]

@@ -25,6 +25,11 @@ class Generator
     protected $tab = '    ';
 
     /**
+     * @var string[]
+     */
+    protected $tags = array();
+
+    /**
      * @param \Rougin\Classidy\Classidy $class
      *
      * @return \Rougin\Classidy\Output
@@ -52,16 +57,6 @@ class Generator
             $file = $this->setInterfaces($file, $interfaces);
         }
 
-        if ($author = $class->getAuthor())
-        {
-            $file = $this->setAuthor($file, $author);
-        }
-
-        if ($package = $class->getPackage())
-        {
-            $file = $this->setPackage($file, $package);
-        }
-
         $lines = array();
 
         if ($props = $class->getProperties())
@@ -71,7 +66,7 @@ class Generator
 
         if ($methods = $class->getMethods())
         {
-            if (count($props) > 0)
+            if (count($lines) > 0)
             {
                 $lines[] = '';
             }
@@ -83,6 +78,41 @@ class Generator
         {
             $file = $this->setImports($file, $imports);
         }
+
+        if ($package = $class->getPackage())
+        {
+            $this->setPackage($package);
+        }
+
+        if ($author = $class->getAuthor())
+        {
+            $this->setAuthor($author);
+        }
+
+        // Add tags to class if available ---------------
+        if (count($this->tags) > 0)
+        {
+            $tags = array('/**');
+
+            foreach ($this->tags as $tag)
+            {
+                if ($tag === '')
+                {
+                    $tags[] = ' *';
+
+                    continue;
+                }
+
+                $tags[] = ' * ' . $tag;
+            }
+
+            $tags[] = ' */';
+
+            $tag = implode(PHP_EOL, $tags);
+
+            $file = $file->replace('// [DETAILS]', $tag);
+        }
+        // ----------------------------------------------
 
         foreach ($lines as $index => $line)
         {
@@ -118,10 +148,11 @@ class Generator
 
     /**
      * @param \Rougin\Classidy\Argument[] $args
+     * @param boolean                     $declare
      *
      * @return string
      */
-    protected function setArguments($args)
+    protected function setArguments($args, $declare = false)
     {
         $items = array();
 
@@ -141,7 +172,14 @@ class Generator
             }
             // ----------------------------------------------------
 
-            $argument = '$' . $item->getName() . $default;
+            $argument = '$';
+
+            if ($declare && ! $item->getClass())
+            {
+                $argument = $item->getDataType() . ' $';
+            }
+
+            $argument .= $item->getName() . $default;
 
             if ($class = $item->getClass())
             {
@@ -161,14 +199,20 @@ class Generator
     }
 
     /**
-     * @param \Rougin\Classidy\Output $file
-     * @param string                  $author
+     * @param string $author
      *
-     * @return \Rougin\Classidy\Output
+     * @return self
      */
-    protected function setAuthor(Output $file, $author)
+    protected function setAuthor($author)
     {
-        return $file->replace('Rougin Gutib <rougingutib@gmail.com>', $author);
+        if (count($this->tags) > 0)
+        {
+            $this->tags[] = '';
+        }
+
+        $this->tags[] = '@author ' . $author;
+
+        return $this;
     }
 
     /**
@@ -370,21 +414,39 @@ class Generator
      */
     protected function setMethods($lines, $methods)
     {
-        foreach ($methods as $index => $method)
+        $maxTypeLength = 4;
+
+        $withTags = false;
+
+        foreach ($methods as $index => $item)
         {
-            $name = (string) $method->getName();
+            $return = $item->getReturn();
 
-            $args = $method->getArguments();
+            if ($return && strlen($return) > $maxTypeLength)
+            {
+                $maxTypeLength = strlen($return);
+            }
 
-            $visibility = $method->getVisibility();
+            if ($item->isTag())
+            {
+                $withTags = true;
+
+                continue;
+            }
+
+            $name = (string) $item->getName();
+
+            $args = $item->getArguments();
+
+            $visibility = $item->getVisibility();
 
             $args = $this->setArguments($args);
 
-            $lines = $this->setComments($lines, $method);
+            $lines = $this->setComments($lines, $item);
             $lines[] = $visibility . ' function ' . $name . '(' . $args . ')';
             $lines[] = '{';
 
-            $lines = $this->setCode($lines, $method);
+            $lines = $this->setCode($lines, $item);
 
             $lines[] = '}';
 
@@ -392,6 +454,35 @@ class Generator
             {
                 $lines[] = '';
             }
+        }
+
+        if ($withTags && count($this->tags) > 0)
+        {
+            $this->tags[] = '';
+        }
+
+        foreach ($methods as $index => $item)
+        {
+            if (! $item->isTag())
+            {
+                continue;
+            }
+
+            // Specify the return type of the method ---
+            $return = $item->getReturn();
+
+            $return = $return ? $return : 'void';
+
+            $return = str_pad($return, $maxTypeLength);
+            // -----------------------------------------
+
+            $args = $item->getArguments();
+
+            $args = $this->setArguments($args, true);
+
+            $name = ' ' . $item->getName() . '(' . $args . ')';
+
+            $this->tags[] = '@method ' . $return . $name;
         }
 
         return $lines;
@@ -409,14 +500,20 @@ class Generator
     }
 
     /**
-     * @param \Rougin\Classidy\Output $file
-     * @param string                  $package
+     * @param string $package
      *
-     * @return \Rougin\Classidy\Output
+     * @return self
      */
-    protected function setPackage(Output $file, $package)
+    protected function setPackage($package)
     {
-        return $file->replace('@package Classidy', '@package ' . $package);
+        if (count($this->tags) > 0)
+        {
+            $this->tags[] = '';
+        }
+
+        $this->tags[] = '@package ' . $package;
+
+        return $this;
     }
 
     /**
@@ -427,6 +524,10 @@ class Generator
      */
     protected function setProperties($lines, $props)
     {
+        $maxTypeLength = 0;
+
+        $types = array();
+
         foreach ($props as $index => $item)
         {
             // TODO: Refactor this portion as getDataType() ---
@@ -442,6 +543,18 @@ class Generator
                 $type = '\\' . $type;
             }
             // ------------------------------------------------
+
+            if (strlen($type) > $maxTypeLength)
+            {
+                $maxTypeLength = strlen($type);
+            }
+
+            $types[$index] = $type;
+
+            if ($item->isTag())
+            {
+                continue;
+            }
 
             $visibility = $item->getVisibility();
 
@@ -470,6 +583,20 @@ class Generator
             {
                 $lines[] = '';
             }
+        }
+
+        foreach ($props as $index => $item)
+        {
+            if (! $item->isTag())
+            {
+                continue;
+            }
+
+            $type = str_pad($types[$index], $maxTypeLength);
+
+            $name = ' $' . $item->getName();
+
+            $this->tags[] = '@property ' . $type . $name;
         }
 
         return $lines;

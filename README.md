@@ -289,6 +289,45 @@ $method->asPrivate();
 > [!NOTE]
 > By default, all of the specified methods are in `public` visibility.
 
+The method can be alternatively be specified as a `@method` tag in the class:
+
+``` php
+// index.php
+
+// ...
+
+$method = new Method('greet');
+
+// ...
+
+// Set as "@method" in the class ---
+$method->asTag();
+// ---------------------------------
+
+// ...
+```
+
+``` bash
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Greeter;
+
+/**
+ * @method string greet(boolean $shout = false)
+ *
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet extends Greeter implements Greetable, Helloable
+{
+}
+```
+
 ### Adding properties
 
 Similiar to adding arguments in a method, adding properties to a class can be done by the following:
@@ -370,6 +409,39 @@ $class->addStringProperty('text')
 
 > [!NOTE]
 > By default, all of the specified properties are in `protected` visibility.
+
+Alternatively, the property be specified as a `@property` tag in the class:
+
+``` php
+// index.php
+
+// ...
+
+$class->addStringProperty('text')->asTag();
+
+// ...
+```
+
+``` bash
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Greeter;
+
+/**
+ * @property string $text
+ *
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet extends Greeter implements Greetable, Helloable
+{
+}
+```
 
 ## Changelog
 

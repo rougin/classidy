@@ -57,8 +57,10 @@ class Output
 
         $namespace = 'namespace Rougin\Classidy;';
 
-        $texts = array('// [IMPORTS]', '// [CODE]');
+        $texts = array('// [CODE]');
+        $texts[] = '// [IMPORTS]';
         $texts[] = $namespace;
+        $texts[] = '// [DETAILS]';
 
         foreach ($lines as $index => $line)
         {

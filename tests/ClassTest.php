@@ -66,6 +66,22 @@ class ClassTest extends Testcase
     /**
      * @return void
      */
+    public function test_class_with_extend_from_other_namespace()
+    {
+        $expected = $this->find('WithSeparateExtend');
+
+        $class = $this->newClass('WithSeparateExtend');
+
+        $class->extendsTo('Rougin\Classidy\Template');
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
     public function test_class_with_extends()
     {
         $expected = $this->find('WithExtends');
@@ -91,22 +107,6 @@ class ClassTest extends Testcase
 
         $interface = 'Rougin\Classidy\Fixture\Classable';
         $class->addInterface($interface);
-
-        $actual = $this->make($class);
-
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @return void
-     */
-    public function test_class_with_extend_from_other_namespace()
-    {
-        $expected = $this->find('WithSeparateExtend');
-
-        $class = $this->newClass('WithSeparateExtend');
-
-        $class->extendsTo('Rougin\Classidy\Template');
 
         $actual = $this->make($class);
 
@@ -195,6 +195,36 @@ class ClassTest extends Testcase
             return $this->loud;
         });
         $class->addMethod($method);
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_class_with_property_tag()
+    {
+        $expected = $this->find('WithPropertyTag');
+
+        $class = $this->newClass('WithPropertyTag');
+
+        $class->addIntegerProperty('age', true)
+            ->asPublic()
+            ->asTag();
+
+        $class->addStringProperty('name')
+            ->withDefaultValue('Classidy')
+            ->asTag();
+
+        $class->addBooleanProperty('loud')
+            ->asPrivate()
+            ->withDefaultValue(false)
+            ->asTag();
+
+        $class->addFloatProperty('grade')
+            ->asTag();
 
         $actual = $this->make($class);
 

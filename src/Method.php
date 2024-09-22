@@ -46,6 +46,11 @@ class Method
     protected $return = null;
 
     /**
+     * @var boolean
+     */
+    protected $tag = false;
+
+    /**
      * @var integer
      */
     protected $visible = self::VISIBLE_PUBLIC;
@@ -151,6 +156,18 @@ class Method
     }
 
     /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @return self
+     */
+    public function asTag()
+    {
+        $this->tag = true;
+
+        return $this;
+    }
+
+    /**
      * @return boolean
      */
     public function forEval()
@@ -216,6 +233,16 @@ class Method
         }
 
         return 'public';
+    }
+
+    /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @return boolean
+     */
+    public function isTag()
+    {
+        return $this->tag;
     }
 
     /**
