@@ -80,7 +80,7 @@ class Output
             }
         }
 
-        $class = implode(PHP_EOL, $lines);
+        $class = implode("\n", $lines);
 
         // Remove the placeholders for class details ----------
         $class = str_replace(' /** extends */', '', $class);

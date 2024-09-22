@@ -119,7 +119,7 @@ class Property extends Argument
     {
         if (is_array($comment))
         {
-            $comment = implode(PHP_EOL, $comment);
+            $comment = implode("\n", $comment);
         }
 
         $this->comment = $comment;

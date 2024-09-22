@@ -95,7 +95,7 @@ class Evaluator
 
         $spaces = strlen($this->tab);
 
-        $line = rtrim(str_replace(PHP_EOL, '', $line));
+        $line = rtrim(str_replace("\n", '', $line));
 
         $length = strlen($line);
 
