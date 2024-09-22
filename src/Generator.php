@@ -291,7 +291,12 @@ class Generator
 
         if ($comment = $method->getComment())
         {
-            $lines[] = ' * ' . $comment;
+            $comments = explode(PHP_EOL, $comment);
+
+            foreach ($comments as $item)
+            {
+                $lines[] = ' * ' . $item;
+            }
 
             if (count($args) > 0 || $return)
             {

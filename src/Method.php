@@ -274,12 +274,17 @@ class Method
     }
 
     /**
-     * @param string $comment
+     * @param string|string[] $comment
      *
      * @return self
      */
     public function setComment($comment)
     {
+        if (is_array($comment))
+        {
+            $comment = implode(PHP_EOL, $comment);
+        }
+
         $this->comment = $comment;
 
         return $this;

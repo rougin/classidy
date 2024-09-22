@@ -11,6 +11,7 @@ class WithComments
 {
     /**
      * Returns the text "Hello world!".
+     * This should be another comment text.
      *
      * @return string
      */

@@ -19,7 +19,6 @@ class MethodTest extends Testcase
         $class = $this->newClass('WithComments');
 
         $method = new Method('hello');
-        $method->setComment('Returns the text "Hello world!".');
         $method->setReturn('string');
         $method->setCodeLine(function ($lines)
         {
@@ -27,6 +26,10 @@ class MethodTest extends Testcase
 
             return $lines;
         });
+
+        $texts = array('Returns the text "Hello world!".');
+        $texts[] = 'This should be another comment text.';
+        $method->setComment($texts);
 
         $class->addMethod($method);
 
