@@ -580,6 +580,19 @@ class Generator
             $name = '$' . $item->getName() . $default . ';';
 
             $lines[] = '/**';
+
+            if ($comment = $item->getComment())
+            {
+                $comments = explode(PHP_EOL, $comment);
+
+                foreach ($comments as $item)
+                {
+                    $lines[] = ' * ' . $item;
+                }
+
+                $lines[] = ' *';
+            }
+
             $lines[] = ' * @var ' . $type;
             $lines[] = ' */';
             $lines[] = $visibility . ' ' . $name;

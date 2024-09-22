@@ -383,6 +383,24 @@ class Classidy
     }
 
     /**
+     * @param string|string[] $comment
+     *
+     * @return self
+     */
+    public function withComment($comment)
+    {
+        $last = count($this->props) - 1;
+
+        $property = $this->props[$last];
+
+        $property->setComment($comment);
+
+        $this->props[$last] = $property;
+
+        return $this;
+    }
+
+    /**
      * @param mixed $default
      *
      * @return self

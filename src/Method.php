@@ -192,6 +192,8 @@ class Method
     }
 
     /**
+     * TODO: Rework as one functionality from Property.
+     *
      * @return string|null
      */
     public function getComment()
@@ -274,6 +276,8 @@ class Method
     }
 
     /**
+     * TODO: Rework as one functionality from Property.
+     *
      * @param string|string[] $comment
      *
      * @return self

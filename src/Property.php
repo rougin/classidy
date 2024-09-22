@@ -18,6 +18,11 @@ class Property extends Argument
     const VISIBLE_PRIVATE = 2;
 
     /**
+     * @var string|null
+     */
+    protected $comment = null;
+
+    /**
      * @var boolean
      */
     protected $tag = false;
@@ -64,6 +69,16 @@ class Property extends Argument
     }
 
     /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @return string|null
+     */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
      * TODO: Rework as one functionality from Method.
      *
      * @return string
@@ -91,5 +106,24 @@ class Property extends Argument
     public function isTag()
     {
         return $this->tag;
+    }
+
+    /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @param string|string[] $comment
+     *
+     * @return self
+     */
+    public function setComment($comment)
+    {
+        if (is_array($comment))
+        {
+            $comment = implode(PHP_EOL, $comment);
+        }
+
+        $this->comment = $comment;
+
+        return $this;
     }
 }

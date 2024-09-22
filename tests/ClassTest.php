@@ -174,6 +174,7 @@ class ClassTest extends Testcase
         $class = $this->newClass('WithProperty');
 
         $class->addIntegerProperty('age', true)
+            ->withComment('Age of the specified class.')
             ->asPublic();
 
         $class->addStringProperty('name')
@@ -182,7 +183,10 @@ class ClassTest extends Testcase
         $name = 'Rougin\Classidy\Fixture\Classes\WithMethod';
         $class->addClassProperty('with', $name);
 
+        $texts = array('Shouts from the specified class.');
+        $texts[] = 'If enabled, it will be on all upper cases.';
         $class->addBooleanProperty('loud')
+            ->withComment($texts)
             ->asPrivate()
             ->withDefaultValue(false);
 

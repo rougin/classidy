@@ -10,6 +10,8 @@ namespace Rougin\Classidy\Fixture\Classes;
 class WithProperty
 {
     /**
+     * Age of the specified class.
+     *
      * @var integer|null
      */
     public $age = null;
@@ -25,6 +27,9 @@ class WithProperty
     protected $with;
 
     /**
+     * Shouts from the specified class.
+     * If enabled, it will be on all upper cases.
+     *
      * @var boolean
      */
     private $loud = false;
