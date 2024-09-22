@@ -108,7 +108,7 @@ class Generator
 
             $tags[] = ' */';
 
-            $tag = implode(PHP_EOL, $tags);
+            $tag = implode("\n", $tags);
 
             $file = $file->replace('// [DETAILS]', $tag);
         }
@@ -291,7 +291,7 @@ class Generator
 
         if ($comment = $method->getComment())
         {
-            $comments = explode(PHP_EOL, $comment);
+            $comments = explode("\n", $comment);
 
             foreach ($comments as $item)
             {
@@ -393,7 +393,7 @@ class Generator
         sort($items);
         // -----------------------------------
 
-        $import = implode(PHP_EOL, $items);
+        $import = implode("\n", $items);
 
         return $file->replace('// [IMPORTS]', $import);
     }
@@ -583,7 +583,7 @@ class Generator
 
             if ($comment = $item->getComment())
             {
-                $comments = explode(PHP_EOL, $comment);
+                $comments = explode("\n", $comment);
 
                 foreach ($comments as $item)
                 {
