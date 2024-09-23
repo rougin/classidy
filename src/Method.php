@@ -65,6 +65,22 @@ class Method
 
     /**
      * @param string  $name
+     * @param string  $type
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addArrayArgument($name, $type, $null = false)
+    {
+        $arg = new Argument($name, Argument::TYPE_ARRAY, $null);
+
+        $this->args[] = $arg->setDataType($type);
+
+        return $this;
+    }
+
+    /**
+     * @param string  $name
      * @param boolean $null
      *
      * @return self

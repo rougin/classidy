@@ -19,10 +19,17 @@ class Argument
 
     const TYPE_CLASS = 4;
 
+    const TYPE_ARRAY = 5;
+
     /**
      * @var class-string|null
      */
     protected $class;
+
+    /**
+     * @var string|null
+     */
+    protected $declare = null;
 
     /**
      * @var mixed|null
@@ -99,6 +106,11 @@ class Argument
             $type = $this->class;
         }
 
+        if ($this->declare)
+        {
+            $type = $this->declare;
+        }
+
         return $type;
     }
 
@@ -112,7 +124,42 @@ class Argument
 
         $parsed = str_replace('"', '\'', $parsed);
 
-        return $parsed !== 'null' ? $parsed : null;
+        if (! is_array($this->default))
+        {
+            return $parsed !== 'null' ? $parsed : null;
+        }
+
+        $parsed = 'array(';
+
+        if ($this->isArrayList($this->default))
+        {
+            foreach ($this->default as $item)
+            {
+                /** @var string */
+                $item = json_encode($item);
+
+                $item = str_replace('"', '\'', $item);
+
+                $parsed .= "\n[TAB][TAB]" . $item . ',';
+            }
+
+            return $parsed . "\n[TAB])";
+        }
+
+        foreach ($this->default as $index => $value)
+        {
+            /** @var string */
+            $index = json_encode($index);
+            $index = str_replace('"', '\'', $index);
+
+            /** @var string */
+            $value = json_encode($value);
+            $value = str_replace('"', '\'', $value);
+
+            $parsed .= "\n[TAB][TAB]" . $index . ' => ' . $value . ',';
+        }
+
+        return $parsed . "\n[TAB])";
     }
 
     /**
@@ -129,6 +176,14 @@ class Argument
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isArray()
+    {
+        return $this->type === self::TYPE_ARRAY;
     }
 
     /**
@@ -152,6 +207,18 @@ class Argument
     }
 
     /**
+     * @param string $declare
+     *
+     * @return self
+     */
+    public function setDataType($declare)
+    {
+        $this->declare = $declare;
+
+        return $this;
+    }
+
+    /**
      * @param mixed $default
      *
      * @return self
@@ -161,5 +228,15 @@ class Argument
         $this->default = $default;
 
         return $this;
+    }
+
+    /**
+     * @param mixed[] $array
+     *
+     * @return boolean
+     */
+    protected function isArrayList($array)
+    {
+        return array_keys($array) === range(0, count($array) - 1);
     }
 }

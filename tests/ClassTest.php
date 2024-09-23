@@ -138,6 +138,17 @@ class ClassTest extends Testcase
         });
         $class->addMethod($method);
 
+        $method = new Method('items');
+        $method->addArrayArgument('items', 'string[]');
+        $method->setReturn('string[]');
+        $method->setCodeLine(function ($lines)
+        {
+            $lines[] = 'return $items;';
+
+            return $lines;
+        });
+        $class->addMethod($method);
+
         $actual = $this->make($class);
 
         $this->assertEquals($expected, $actual);
@@ -172,6 +183,22 @@ class ClassTest extends Testcase
         $expected = $this->find('WithProperty');
 
         $class = $this->newClass('WithProperty');
+
+        $default = array('property', 'argument', 'classidy');
+        $class->addArrayProperty('cols', 'string[]')
+            ->withDefaultValue($default);
+
+        $class->addArrayProperty('types', 'integer[]');
+
+        $default = array(
+            'page_query_string' => true,
+            'use_page_numbers' => true,
+            'query_string_segment' => 'p',
+            'reuse_query_string' => true,
+        );
+
+        $class->addArrayProperty('items', 'array<string, mixed>')
+            ->withDefaultValue($default);
 
         $class->addIntegerProperty('age', true)
             ->withComment('Age of the specified class.')

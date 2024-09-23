@@ -135,7 +135,7 @@ class Generator
         $result = implode("\n", $lines);
         $file->replace($search, $result);
 
-        return $file;
+        return $file->replace('[TAB]', $this->tab);
     }
 
     /**
@@ -572,10 +572,13 @@ class Generator
             {
                 $default = ' = ' . $item->getDefaultValue();
             }
-
-            if ($item->isNull())
+            elseif ($item->isNull())
             {
                 $default = ' = null';
+            }
+            elseif ($item->isArray())
+            {
+                $default = ' = array()';
             }
             // ----------------------------------------------------
 

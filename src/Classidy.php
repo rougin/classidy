@@ -56,6 +56,24 @@ class Classidy
 
     /**
      * @param string  $name
+     * @param string  $type
+     * @param boolean $null
+     *
+     * @return self
+     */
+    public function addArrayProperty($name, $type, $null = false)
+    {
+        $prop = new Property($name, Property::TYPE_ARRAY, $null);
+
+        $prop->setDataType($type);
+
+        $this->props[] = $prop;
+
+        return $this;
+    }
+
+    /**
+     * @param string  $name
      * @param boolean $null
      *
      * @return self

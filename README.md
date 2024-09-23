@@ -214,6 +214,7 @@ To add arguments in a specified method, kindy use the following methods below:
 
 | Method               | Description                                          |
 |----------------------|------------------------------------------------------|
+| `addArrayArgument`   | Adds a property with a `array` as its data type.     |
 | `addBooleanArgument` | Adds an argument with a `boolean` as its data type.  |
 | `addClassArgument`   | Adds an argument with the specified class.           |
 | `addFloatArgument`   | Adds an argument with a `float` as its data type.    |
@@ -334,6 +335,7 @@ Similiar to adding arguments in a method, adding properties to a class can be do
 
 | Method               | Description                                         |
 |----------------------|-----------------------------------------------------|
+| `addArrayProperty`   | Adds a property with a `array` as its data type.    |
 | `addBooleanProperty` | Adds a property with a `boolean` as its data type.  |
 | `addClassProperty`   | Adds a property with the specified class.           |
 | `addFloatProperty`   | Adds a property with a `float` as its data type.    |

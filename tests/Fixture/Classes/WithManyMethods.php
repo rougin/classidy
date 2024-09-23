@@ -24,4 +24,14 @@ class WithManyMethods
     {
         return 'world';
     }
+
+    /**
+     * @param string[] $items
+     *
+     * @return string[]
+     */
+    public function items($items)
+    {
+        return $items;
+    }
 }

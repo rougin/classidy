@@ -10,6 +10,30 @@ namespace Rougin\Classidy\Fixture\Classes;
 class WithProperty
 {
     /**
+     * @var string[]
+     */
+    protected $cols = array(
+        'property',
+        'argument',
+        'classidy',
+    );
+
+    /**
+     * @var integer[]
+     */
+    protected $types = array();
+
+    /**
+     * @var array<string, mixed>
+     */
+    protected $items = array(
+        'page_query_string' => true,
+        'use_page_numbers' => true,
+        'query_string_segment' => 'p',
+        'reuse_query_string' => true,
+    );
+
+    /**
      * Age of the specified class.
      *
      * @var integer|null
