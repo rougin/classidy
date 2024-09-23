@@ -183,11 +183,13 @@ class Generator
 
             if ($class = $item->getClass())
             {
-                $ref = new \ReflectionClass($class);
+                // Extract the base class --------
+                $names = explode('\\', $class);
+
+                $name = $names[count($names) - 1];
+                // -------------------------------
 
                 $this->imports[] = $class;
-
-                $name = $ref->getShortName();
 
                 $argument = $name . ' ' . $argument;
             }

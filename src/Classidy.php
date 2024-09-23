@@ -116,19 +116,23 @@ class Classidy
      */
     public function addInterface($interface)
     {
-        $ref = new \ReflectionClass($interface);
+        // Extract the base class -----------
+        $names = explode('\\', $interface);
 
-        $parentNamespace = $ref->getNamespaceName();
+        /** @var class-string */
+        $shorten = $names[count($names) - 1];
+
+        array_pop($names);
+
+        $parent = implode('\\', $names);
+        // ----------------------------------
 
         $namespace = $this->getNamespace();
 
-        if ($parentNamespace !== $namespace)
+        if ($parent !== $namespace)
         {
             $this->importClass($interface);
         }
-
-        /** @var class-string */
-        $shorten = $ref->getShortName();
 
         $this->notions[] = $shorten;
 
@@ -215,19 +219,23 @@ class Classidy
      */
     public function extendsTo($extends)
     {
-        $ref = new \ReflectionClass($extends);
+        // Extract the base class -----------
+        $names = explode('\\', $extends);
 
-        $parentNamespace = $ref->getNamespaceName();
+        /** @var class-string */
+        $shorten = $names[count($names) - 1];
+
+        array_pop($names);
+
+        $parent = implode('\\', $names);
+        // ----------------------------------
 
         $namespace = $this->getNamespace();
 
-        if ($parentNamespace !== $namespace)
+        if ($parent !== $namespace)
         {
             $this->importClass($extends);
         }
-
-        /** @var class-string */
-        $shorten = $ref->getShortName();
 
         $this->extends = $shorten;
 
