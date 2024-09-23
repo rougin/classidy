@@ -558,15 +558,15 @@ class Generator
             }
             // ------------------------------------------------
 
-            if (strlen($type) > $maxTypeLength)
-            {
-                $maxTypeLength = strlen($type);
-            }
-
             $types[$index] = $type;
 
             if ($item->isTag())
             {
+                if (strlen($type) > $maxTypeLength)
+                {
+                    $maxTypeLength = strlen($type);
+                }
+
                 continue;
             }
 
