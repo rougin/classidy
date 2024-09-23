@@ -131,20 +131,7 @@ class Argument
 
         $parsed = 'array(';
 
-        if ($this->isArrayList($this->default))
-        {
-            foreach ($this->default as $item)
-            {
-                /** @var string */
-                $item = json_encode($item);
-
-                $item = str_replace('"', '\'', $item);
-
-                $parsed .= "\n[TAB][TAB]" . $item . ',';
-            }
-
-            return $parsed . "\n[TAB])";
-        }
+        $isList = $this->isArrayList($this->default);
 
         foreach ($this->default as $index => $value)
         {
@@ -156,7 +143,14 @@ class Argument
             $value = json_encode($value);
             $value = str_replace('"', '\'', $value);
 
-            $parsed .= "\n[TAB][TAB]" . $index . ' => ' . $value . ',';
+            $text = $value;
+
+            if (! $isList)
+            {
+                $text = $index . ' => ' . $value;
+            }
+
+            $parsed .= "\n[TAB][TAB]" . $text . ',';
         }
 
         return $parsed . "\n[TAB])";
