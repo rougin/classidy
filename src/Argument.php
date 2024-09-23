@@ -103,12 +103,17 @@ class Argument
         if ($this->getType() === self::TYPE_CLASS)
         {
             /** @var string */
-            $type = $this->class;
+            $type = '\\' . $this->class;
         }
 
         if ($this->declare)
         {
             $type = $this->declare;
+        }
+
+        if ($this->isNull())
+        {
+            $type = $type . '|null';
         }
 
         return $type;
@@ -119,6 +124,11 @@ class Argument
      */
     public function getDefaultValue()
     {
+        if ($this->isNull())
+        {
+            return 'null';
+        }
+
         /** @var string */
         $parsed = json_encode($this->default);
 
@@ -126,9 +136,17 @@ class Argument
 
         if (! is_array($this->default))
         {
+            // Only applicable if coming from a Property -----
+            if ($this instanceof Property && $this->isArray())
+            {
+                return 'array()';
+            }
+            // -----------------------------------------------
+
             return $parsed !== 'null' ? $parsed : null;
         }
 
+        // Try to parse the array items in a property/method ---
         $parsed = 'array(';
 
         $isList = $this->isArrayList($this->default);
@@ -157,6 +175,7 @@ class Argument
 
             $parsed .= "\n[TAB][TAB]" . $text . ',';
         }
+        // -----------------------------------------------------
 
         return $parsed . "\n[TAB])";
     }

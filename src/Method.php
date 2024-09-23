@@ -9,6 +9,8 @@ namespace Rougin\Classidy;
  */
 class Method
 {
+    use Element;
+
     const VISIBLE_PUBLIC = 0;
 
     const VISIBLE_PROTECTED = 1;
@@ -153,42 +155,6 @@ class Method
     }
 
     /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @return self
-     */
-    public function asPrivate()
-    {
-        $this->visible = self::VISIBLE_PRIVATE;
-
-        return $this;
-    }
-
-    /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @return self
-     */
-    public function asProtected()
-    {
-        $this->visible = self::VISIBLE_PROTECTED;
-
-        return $this;
-    }
-
-    /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @return self
-     */
-    public function asTag()
-    {
-        $this->tag = true;
-
-        return $this;
-    }
-
-    /**
      * @return boolean
      */
     public function forEval()
@@ -213,26 +179,6 @@ class Method
     }
 
     /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @return string|null
-     */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @return string|null
-     */
-    public function getLink()
-    {
-        return $this->link;
-    }
-
-    /**
      * @return string
      */
     public function getName()
@@ -246,36 +192,6 @@ class Method
     public function getReturn()
     {
         return $this->return;
-    }
-
-    /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @return string
-     */
-    public function getVisibility()
-    {
-        if ($this->visible === self::VISIBLE_PRIVATE)
-        {
-            return 'private';
-        }
-
-        if ($this->visible === self::VISIBLE_PROTECTED)
-        {
-            return 'protected';
-        }
-
-        return 'public';
-    }
-
-    /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @return boolean
-     */
-    public function isTag()
-    {
-        return $this->tag;
     }
 
     /**
@@ -302,39 +218,6 @@ class Method
         $this->code = $code;
 
         $this->eval = false;
-
-        return $this;
-    }
-
-    /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @param string|string[] $comment
-     *
-     * @return self
-     */
-    public function setComment($comment)
-    {
-        if (is_array($comment))
-        {
-            $comment = implode("\n", $comment);
-        }
-
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    /**
-     * TODO: Rework as one functionality from Property.
-     *
-     * @param string $link
-     *
-     * @return self
-     */
-    public function setLink($link)
-    {
-        $this->link = $link;
 
         return $this;
     }

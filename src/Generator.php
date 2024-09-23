@@ -158,19 +158,10 @@ class Generator
 
         foreach ($args as $item)
         {
-            // TODO: Refactor this portion as getDefaultValue() ---
-            $default = '';
-
-            if ($item->getDefaultValue())
+            if ($default = $item->getDefaultValue())
             {
-                $default = ' = ' . $item->getDefaultValue();
+                $default = ' = ' . $default;
             }
-
-            if ($item->isNull())
-            {
-                $default = ' = null';
-            }
-            // ----------------------------------------------------
 
             $argument = '$';
 
@@ -320,19 +311,7 @@ class Generator
 
         foreach ($args as $index => $item)
         {
-            // TODO: Refactor this portion as getDataType() ---
             $type = $item->getDataType();
-
-            if ($item->isNull())
-            {
-                $type = $type . '|null';
-            }
-
-            if ($item->getClass())
-            {
-                $type = '\\' . $type;
-            }
-            // ------------------------------------------------
 
             if (strlen($type) > $maxTypeLength)
             {
@@ -544,19 +523,7 @@ class Generator
 
         foreach ($props as $index => $item)
         {
-            // TODO: Refactor this portion as getDataType() ---
             $type = $item->getDataType();
-
-            if ($item->isNull())
-            {
-                $type = $type . '|null';
-            }
-
-            if ($item->getClass())
-            {
-                $type = '\\' . $type;
-            }
-            // ------------------------------------------------
 
             $types[$index] = $type;
 
@@ -572,22 +539,10 @@ class Generator
 
             $visibility = $item->getVisibility();
 
-            // TODO: Refactor this portion as getDefaultValue() ---
-            $default = '';
-
-            if ($item->getDefaultValue())
+            if ($default = $item->getDefaultValue())
             {
-                $default = ' = ' . $item->getDefaultValue();
+                $default = ' = ' . $default;
             }
-            elseif ($item->isNull())
-            {
-                $default = ' = null';
-            }
-            elseif ($item->isArray())
-            {
-                $default = ' = array()';
-            }
-            // ----------------------------------------------------
 
             $name = '$' . $item->getName() . $default . ';';
 
