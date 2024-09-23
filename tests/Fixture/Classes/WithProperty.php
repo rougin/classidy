@@ -19,6 +19,8 @@ class WithProperty
     );
 
     /**
+     * @link https://roug.in
+     *
      * @var integer[]
      */
     protected $types = array();

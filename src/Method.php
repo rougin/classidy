@@ -36,6 +36,11 @@ class Method
     protected $eval = false;
 
     /**
+     * @var string|null
+     */
+    protected $link = null;
+
+    /**
      * @var string
      */
     protected $name;
@@ -218,6 +223,16 @@ class Method
     }
 
     /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @return string|null
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
      * @return string
      */
     public function getName()
@@ -306,6 +321,20 @@ class Method
         }
 
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @param string $link
+     *
+     * @return self
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
 
         return $this;
     }

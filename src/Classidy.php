@@ -443,4 +443,22 @@ class Classidy
 
         return $this;
     }
+
+    /**
+     * @param string $link
+     *
+     * @return self
+     */
+    public function withLink($link)
+    {
+        $last = count($this->props) - 1;
+
+        $property = $this->props[$last];
+
+        $property->setLink($link);
+
+        $this->props[$last] = $property;
+
+        return $this;
+    }
 }

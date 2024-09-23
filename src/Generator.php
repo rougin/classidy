@@ -282,16 +282,18 @@ class Generator
 
         $return = $method->getReturn();
 
-        // Criteria for not putting a comment ------------
-        if (! $comment && count($args) === 0 && ! $return)
+        $link = $method->getLink();
+
+        // Criteria for not putting a comment -----------------------
+        if (! $comment && count($args) === 0 && ! $return && ! $link)
         {
             return $lines;
         }
-        // -----------------------------------------------
+        // ----------------------------------------------------------
 
         $lines[] = '/**';
 
-        if ($comment = $method->getComment())
+        if ($comment)
         {
             $comments = explode("\n", $comment);
 
@@ -299,11 +301,16 @@ class Generator
             {
                 $lines[] = ' * ' . $item;
             }
+        }
 
-            if (count($args) > 0 || $return)
-            {
-                $lines[] = ' *';
-            }
+        if ($link)
+        {
+            $lines[] = ' * @link ' . $link;
+        }
+
+        if (($comment || $link) && (count($args) > 0 || $return))
+        {
+            $lines[] = ' *';
         }
 
         // Get the types, then return the longest data type ---
@@ -590,10 +597,17 @@ class Generator
             {
                 $comments = explode("\n", $comment);
 
-                foreach ($comments as $item)
+                foreach ($comments as $value)
                 {
-                    $lines[] = ' * ' . $item;
+                    $lines[] = ' * ' . $value;
                 }
+
+                $lines[] = ' *';
+            }
+
+            if ($link = $item->getLink())
+            {
+                $lines[] = ' * @link ' . $link;
 
                 $lines[] = ' *';
             }

@@ -203,4 +203,29 @@ class MethodTest extends Testcase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @return void
+     */
+    public function test_method_with_link()
+    {
+        $expected = $this->find('WithLink');
+
+        $class = $this->newClass('WithLink');
+
+        $method = new Method('hello');
+        $method->setLink('https://roug.in');
+        $method->setReturn('string');
+
+        $method->setCodeEval(function ()
+        {
+            return 'Hello world!';
+        });
+
+        $class->addMethod($method);
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
 }

@@ -140,10 +140,15 @@ class Argument
             $index = str_replace('"', '\'', $index);
 
             /** @var string */
-            $value = json_encode($value);
+            $value = var_export($value, true);
             $value = str_replace('"', '\'', $value);
 
-            $text = $value;
+            // Parse value if identified as array -----------
+            /** @var string */
+            $text = preg_replace('/\s+/', ' ', $value);
+            $text = str_replace('array ( ', 'array(', $text);
+            $text = str_replace(', )', ')', $text);
+            // ----------------------------------------------
 
             if (! $isList)
             {

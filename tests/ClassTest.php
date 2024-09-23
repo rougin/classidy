@@ -188,7 +188,8 @@ class ClassTest extends Testcase
         $class->addArrayProperty('cols', 'string[]')
             ->withDefaultValue($default);
 
-        $class->addArrayProperty('types', 'integer[]');
+        $class->addArrayProperty('types', 'integer[]')
+            ->withLink('https://roug.in');
 
         $default = array(
             'page_query_string' => true,

@@ -23,6 +23,11 @@ class Property extends Argument
     protected $comment = null;
 
     /**
+     * @var string|null
+     */
+    protected $link = null;
+
+    /**
      * @var boolean
      */
     protected $tag = false;
@@ -37,9 +42,9 @@ class Property extends Argument
      *
      * @return self
      */
-    public function asTag()
+    public function asPrivate()
     {
-        $this->tag = true;
+        $this->visible = self::VISIBLE_PRIVATE;
 
         return $this;
     }
@@ -61,9 +66,9 @@ class Property extends Argument
      *
      * @return self
      */
-    public function asPrivate()
+    public function asTag()
     {
-        $this->visible = self::VISIBLE_PRIVATE;
+        $this->tag = true;
 
         return $this;
     }
@@ -76,6 +81,16 @@ class Property extends Argument
     public function getComment()
     {
         return $this->comment;
+    }
+
+    /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @return string|null
+     */
+    public function getLink()
+    {
+        return $this->link;
     }
 
     /**
@@ -123,6 +138,20 @@ class Property extends Argument
         }
 
         $this->comment = $comment;
+
+        return $this;
+    }
+
+    /**
+     * TODO: Rework as one functionality from Property.
+     *
+     * @param string $link
+     *
+     * @return self
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
 
         return $this;
     }
