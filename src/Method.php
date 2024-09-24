@@ -100,9 +100,9 @@ class Method
     }
 
     /**
-     * @param string       $name
-     * @param class-string $class
-     * @param boolean      $null
+     * @param string  $name
+     * @param string  $class
+     * @param boolean $null
      *
      * @return self
      */

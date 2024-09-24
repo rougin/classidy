@@ -3,6 +3,7 @@
 namespace Rougin\Classidy\Fixture\Classes;
 
 use Rougin\Classidy\Fixture\Classable;
+use Rougin\Classidy\Fixture\Traitable;
 
 /**
  * @package Fixture
@@ -11,6 +12,8 @@ use Rougin\Classidy\Fixture\Classable;
  */
 class WithAllFeatures extends WithMethod implements Classable
 {
+    use Traitable;
+
     /**
      * @param string $name
      *

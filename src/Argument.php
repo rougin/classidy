@@ -22,7 +22,7 @@ class Argument
     const TYPE_ARRAY = 5;
 
     /**
-     * @var class-string|null
+     * @var string|null
      */
     protected $class;
 
@@ -66,7 +66,7 @@ class Argument
     }
 
     /**
-     * @return class-string|null
+     * @return string|null
      */
     public function getClass()
     {
@@ -102,7 +102,6 @@ class Argument
 
         if ($this->getType() === self::TYPE_CLASS)
         {
-            /** @var string */
             $type = '\\' . $this->class;
         }
 
@@ -213,7 +212,7 @@ class Argument
     }
 
     /**
-     * @param class-string $class
+     * @param string $class
      *
      * @return self
      */

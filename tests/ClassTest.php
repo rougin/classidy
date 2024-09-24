@@ -17,10 +17,14 @@ class ClassTest extends Testcase
         $expected = $this->find('WithAllFeatures');
 
         $class = $this->newClass('WithAllFeatures');
+
         $extends = 'Rougin\Classidy\Fixture\Classes\WithMethod';
         $class->extendsTo($extends);
+
         $interface = 'Rougin\Classidy\Fixture\Classable';
         $class->addInterface($interface);
+
+        $class->addTrait('Rougin\Classidy\Fixture\Traitable');
 
         $method = new Method('greet');
         $method->addStringArgument('name')
@@ -257,6 +261,23 @@ class ClassTest extends Testcase
 
         $class->addFloatProperty('grade')
             ->asTag();
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
+    public function test_class_with_trait()
+    {
+        $expected = $this->find('WithTrait');
+
+        $class = $this->newClass('WithTrait');
+
+        $class->extendsTo('Rougin\Classidy\Template');
+        $class->addTrait('Rougin\Classidy\Fixture\Traitable');
 
         $actual = $this->make($class);
 

@@ -15,12 +15,12 @@ class Classidy
     protected $author = null;
 
     /**
-     * @var class-string|null
+     * @var string|null
      */
     protected $extends;
 
     /**
-     * @var class-string[]
+     * @var string[]
      */
     protected $imports = array();
 
@@ -30,7 +30,7 @@ class Classidy
     protected $methods = array();
 
     /**
-     * @var class-string[]
+     * @var string[]
      */
     protected $notions = array();
 
@@ -53,6 +53,11 @@ class Classidy
      * @var \Rougin\Classidy\Property[]
      */
     protected $props = array();
+
+    /**
+     * @var string[]
+     */
+    protected $traits = array();
 
     /**
      * @param string  $name
@@ -86,9 +91,9 @@ class Classidy
     }
 
     /**
-     * @param string       $name
-     * @param class-string $class
-     * @param boolean      $null
+     * @param string  $name
+     * @param string  $class
+     * @param boolean $null
      *
      * @return self
      */
@@ -128,7 +133,7 @@ class Classidy
     }
 
     /**
-     * @param class-string $interface
+     * @param string $interface
      *
      * @return self
      */
@@ -137,7 +142,6 @@ class Classidy
         // Extract the base class -----------
         $names = explode('\\', $interface);
 
-        /** @var class-string */
         $shorten = $names[count($names) - 1];
 
         array_pop($names);
@@ -178,6 +182,18 @@ class Classidy
     public function addStringProperty($name, $null = false)
     {
         $this->props[] = new Property($name, Property::TYPE_STRING, $null);
+
+        return $this;
+    }
+
+    /**
+     * @param string $trait
+     *
+     * @return self
+     */
+    public function addTrait($trait)
+    {
+        $this->traits[] = $trait;
 
         return $this;
     }
@@ -231,7 +247,7 @@ class Classidy
     }
 
     /**
-     * @param class-string $extends
+     * @param string $extends
      *
      * @return self
      */
@@ -240,7 +256,6 @@ class Classidy
         // Extract the base class -----------
         $names = explode('\\', $extends);
 
-        /** @var class-string */
         $shorten = $names[count($names) - 1];
 
         array_pop($names);
@@ -269,7 +284,7 @@ class Classidy
     }
 
     /**
-     * @return class-string|null
+     * @return string|null
      */
     public function getExtends()
     {
@@ -277,7 +292,7 @@ class Classidy
     }
 
     /**
-     * @return class-string[]
+     * @return string[]
      */
     public function getImports()
     {
@@ -285,7 +300,7 @@ class Classidy
     }
 
     /**
-     * @return class-string[]
+     * @return string[]
      */
     public function getInterfaces()
     {
@@ -333,7 +348,15 @@ class Classidy
     }
 
     /**
-     * @param class-string $class
+     * @return string[]
+     */
+    public function getTraits()
+    {
+        return $this->traits;
+    }
+
+    /**
+     * @param string $class
      *
      * @return self
      */

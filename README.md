@@ -189,6 +189,53 @@ class Greet extends Greeter implements Greetable, Helloable
 }
 ```
 
+### Adding traits
+
+Similar in defining class and interfaces, adding a trait is possible using `addTrait`:
+
+``` php
+// index.php
+
+use Acme\Hello\Traitable;
+
+// ...
+
+// Define the details of the class ---
+// ...
+
+$class->addTrait(Traitable::class);
+
+// ...
+// -----------------------------------
+
+// ...
+```
+
+``` bash
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Traitable;
+
+/**
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet
+{
+    use Traitable;
+
+    public function greet()
+    {
+        return 'Hello world!';
+    }
+}
+```
+
 ### Adding methods
 
 Based from the first example, the `addMethod` can be used to add a method to the class:
@@ -476,4 +523,3 @@ The MIT License (MIT). Please see [LICENSE][link-license] for more information.
 [link-downloads]: https://packagist.org/packages/rougin/classidy
 [link-license]: https://github.com/rougin/classidy/blob/master/LICENSE.md
 [link-packagist]: https://packagist.org/packages/rougin/classidy
-[link-upgrading]: https://github.com/rougin/classidy/blob/master/UPGRADING.md

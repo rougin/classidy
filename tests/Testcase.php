@@ -53,8 +53,9 @@ class Testcase extends Legacy
     {
         $generator = new Generator;
 
-        /** @var string */
         $result = $generator->make($class);
+
+        $result = (string) $result;
 
         return str_replace("\r", '', $result);
     }

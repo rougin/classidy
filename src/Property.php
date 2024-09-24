@@ -3,7 +3,7 @@
 namespace Rougin\Classidy;
 
 /**
- * @method \Rougin\Classidy\Property setClass(class-string $class)
+ * @method \Rougin\Classidy\Property setClass(string $class)
  *
  * @package Classidy
  *

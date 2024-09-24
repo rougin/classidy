@@ -15,9 +15,14 @@ class Generator
     protected $eval;
 
     /**
-     * @var class-string[]
+     * @var string[]
      */
     protected $imports = array();
+
+    /**
+     * @var string
+     */
+    protected $namespace = '';
 
     /**
      * @var string
@@ -44,6 +49,8 @@ class Generator
 
         if ($namespace = $class->getNamespace())
         {
+            $this->namespace = $namespace;
+
             $file = $this->setNamespace($file, $namespace);
         }
 
@@ -58,6 +65,11 @@ class Generator
         }
 
         $lines = array();
+
+        if ($traits = $class->getTraits())
+        {
+            $lines = $this->setTraits($lines, $traits);
+        }
 
         if ($props = $class->getProperties())
         {
@@ -351,7 +363,7 @@ class Generator
 
     /**
      * @param \Rougin\Classidy\Output $file
-     * @param class-string            $extends
+     * @param string                  $extends
      *
      * @return \Rougin\Classidy\Output
      */
@@ -362,7 +374,7 @@ class Generator
 
     /**
      * @param \Rougin\Classidy\Output $file
-     * @param class-string[]          $imports
+     * @param string[]                $imports
      *
      * @return \Rougin\Classidy\Output
      */
@@ -388,7 +400,7 @@ class Generator
 
     /**
      * @param \Rougin\Classidy\Output $file
-     * @param class-string[]          $interfaces
+     * @param string[]                $interfaces
      *
      * @return \Rougin\Classidy\Output
      */
@@ -589,6 +601,30 @@ class Generator
             $name = ' $' . $item->getName();
 
             $this->tags[] = '@property ' . $type . $name;
+        }
+
+        return $lines;
+    }
+
+    /**
+     * @param string[] $lines
+     * @param string[] $traits
+     *
+     * @return string[]
+     */
+    protected function setTraits($lines, $traits)
+    {
+        foreach ($traits as $trait)
+        {
+            // Extract the base class --------
+            $names = explode('\\', $trait);
+
+            $name = $names[count($names) - 1];
+            // -------------------------------
+
+            $this->imports[] = $trait;
+
+            $lines[] = 'use ' . $name . ';';
         }
 
         return $lines;
