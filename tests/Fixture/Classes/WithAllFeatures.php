@@ -15,6 +15,11 @@ class WithAllFeatures extends WithMethod implements Classable
     use Traitable;
 
     /**
+     * @var integer
+     */
+    protected $type;
+
+    /**
      * @param string $name
      *
      * @return string

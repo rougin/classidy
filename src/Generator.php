@@ -73,6 +73,11 @@ class Generator
 
         if ($props = $class->getProperties())
         {
+            if (count($lines) > 0)
+            {
+                $lines[] = '';
+            }
+
             $lines = $this->setProperties($lines, $props);
         }
 

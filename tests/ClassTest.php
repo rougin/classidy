@@ -26,6 +26,8 @@ class ClassTest extends Testcase
 
         $class->addTrait('Rougin\Classidy\Fixture\Traitable');
 
+        $class->addIntegerProperty('type');
+
         $method = new Method('greet');
         $method->addStringArgument('name')
             ->withDefaultValue('world');
