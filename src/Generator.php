@@ -571,7 +571,7 @@ class Generator
 
                 foreach ($comments as $value)
                 {
-                    $lines[] = ' * ' . $value;
+                    $lines[] = ' *' . ($value ? ' ' : '') . $value;
                 }
 
                 $lines[] = ' *';
