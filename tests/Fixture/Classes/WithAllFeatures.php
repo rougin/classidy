@@ -8,6 +8,8 @@ use Rougin\Classidy\Fixture\Traitable;
 /**
  * A class with all features to Classidy.
  *
+ * @method void test()
+ *
  * @package Fixture
  *
  * @author Rougin Gutib <rougingutib@gmail.com>

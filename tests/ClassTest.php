@@ -30,6 +30,10 @@ class ClassTest extends Testcase
 
         $class->addIntegerProperty('type');
 
+        $method = new Method('test');
+        $method->setReturn('void')->asTag();
+        $class->addMethod($method);
+
         $method = new Method('greet');
         $method->addStringArgument('name')
             ->withDefaultValue('world');

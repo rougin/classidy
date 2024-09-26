@@ -446,14 +446,14 @@ class Generator
         {
             $return = $item->getReturn();
 
-            if ($return && strlen($return) > $maxTypeLength)
-            {
-                $maxTypeLength = strlen($return);
-            }
-
             if ($item->isTag())
             {
                 $withTags = true;
+
+                if ($return && strlen($return) > $maxTypeLength)
+                {
+                    $maxTypeLength = strlen($return);
+                }
 
                 continue;
             }

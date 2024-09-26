@@ -36,6 +36,7 @@ $class = new Classidy;
 // ---------------------------------
 
 // Define the details of the class ------------
+$class->setComment('Sample class for Acme.');
 $class->setNamespace('Acme');
 $class->setPackage('Acme');
 $class->setAuthor('John Doe', 'jdoe@acme.com');
@@ -66,6 +67,8 @@ $ php index.php
 namespace Acme;
 
 /**
+ * Sample class for Acme.
+ *
  * @package Acme
  *
  * @author John Doe <jdoe@acme.com>
@@ -128,6 +131,8 @@ namespace Acme;
 use Acme\Hello\Greeter;
 
 /**
+ * Sample class for Acme.
+ *
  * @package Acme
  *
  * @author John Doe <jdoe@acme.com>
@@ -176,6 +181,8 @@ namespace Acme;
 use Acme\Hello\Greeter;
 
 /**
+ * Sample class for Acme.
+ *
  * @package Acme
  *
  * @author John Doe <jdoe@acme.com>
@@ -221,6 +228,8 @@ namespace Acme;
 use Acme\Hello\Traitable;
 
 /**
+ * Sample class for Acme.
+ *
  * @package Acme
  *
  * @author John Doe <jdoe@acme.com>
@@ -296,6 +305,8 @@ namespace Acme;
 use Acme\Hello\Greeter;
 
 /**
+ * Sample class for Acme.
+ *
  * @package Acme
  *
  * @author John Doe <jdoe@acme.com>
@@ -365,6 +376,8 @@ namespace Acme;
 use Acme\Hello\Greeter;
 
 /**
+ * Sample class for Acme.
+ *
  * @method string greet(boolean $shout = false)
  *
  * @package Acme
@@ -419,6 +432,8 @@ namespace Acme;
 use Acme\Hello\Greeter;
 
 /**
+ * Sample class for Acme.
+ *
  * @package Acme
  *
  * @author John Doe <jdoe@acme.com>
@@ -482,6 +497,8 @@ use Acme\Hello\Greeter;
 
 /**
  * @property string $text
+ *
+ * Sample class for Acme.
  *
  * @package Acme
  *
