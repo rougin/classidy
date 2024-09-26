@@ -9,6 +9,7 @@ namespace Rougin\Classidy;
  */
 class Method
 {
+    use Comment;
     use Element;
 
     const VISIBLE_PUBLIC = 0;

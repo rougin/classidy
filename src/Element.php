@@ -58,14 +58,6 @@ trait Element
     /**
      * @return string|null
      */
-    public function getComment()
-    {
-        return $this->comment;
-    }
-
-    /**
-     * @return string|null
-     */
     public function getLink()
     {
         return $this->link;
@@ -95,23 +87,6 @@ trait Element
     public function isTag()
     {
         return $this->tag;
-    }
-
-    /**
-     * @param string|string[] $comment
-     *
-     * @return self
-     */
-    public function setComment($comment)
-    {
-        if (is_array($comment))
-        {
-            $comment = implode("\n", $comment);
-        }
-
-        $this->comment = $comment;
-
-        return $this;
     }
 
     /**

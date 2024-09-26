@@ -9,10 +9,17 @@ namespace Rougin\Classidy;
  */
 class Classidy
 {
+    use Comment;
+
     /**
      * @var string|null
      */
     protected $author = null;
+
+    /**
+     * @var string|null
+     */
+    protected $comment = null;
 
     /**
      * @var string|null

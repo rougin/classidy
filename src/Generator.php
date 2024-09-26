@@ -106,10 +106,24 @@ class Generator
             $this->setAuthor($author);
         }
 
-        // Add tags to class if available ---------------
-        if (count($this->tags) > 0)
+        $comment = $class->getComment();
+
+        // Add tags and comments to class if available -----------
+        if (count($this->tags) > 0 || $comment)
         {
             $tags = array('/**');
+
+            if ($comment)
+            {
+                $comments = explode("\n", $comment);
+
+                foreach ($comments as $value)
+                {
+                    $tags[] = ' *' . ($value ? ' ' : '') . $value;
+                }
+
+                $tags[] = ' *';
+            }
 
             foreach ($this->tags as $tag)
             {
@@ -129,7 +143,7 @@ class Generator
 
             $file = $file->replace('// [DETAILS]', $tag);
         }
-        // ----------------------------------------------
+        // -------------------------------------------------------
 
         foreach ($lines as $index => $line)
         {

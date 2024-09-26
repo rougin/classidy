@@ -11,6 +11,7 @@ namespace Rougin\Classidy;
  */
 class Property extends Argument
 {
+    use Comment;
     use Element;
 
     const VISIBLE_PUBLIC = 0;

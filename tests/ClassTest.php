@@ -17,6 +17,8 @@ class ClassTest extends Testcase
         $expected = $this->find('WithAllFeatures');
 
         $class = $this->newClass('WithAllFeatures');
+        $text = 'A class with all features to Classidy.';
+        $class->setComment($text);
 
         $extends = 'Rougin\Classidy\Fixture\Classes\WithMethod';
         $class->extendsTo($extends);

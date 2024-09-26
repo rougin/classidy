@@ -6,6 +6,8 @@ use Rougin\Classidy\Fixture\Classable;
 use Rougin\Classidy\Fixture\Traitable;
 
 /**
+ * A class with all features to Classidy.
+ *
  * @package Fixture
  *
  * @author Rougin Gutib <rougingutib@gmail.com>
