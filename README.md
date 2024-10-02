@@ -89,9 +89,18 @@ The `setCodeLine` method can also be used for specifying code of a method in a l
 
 // ...
 
-$method->setCodeEval(function ($lines)
+$shout = false;
+
+$method->setCodeEval(function ($lines) use ($shout)
 {
-    $lines[] = "return 'Hello world!';";
+    if ($shout)
+    {
+        $lines[] = "return 'HELLO WORLD!';";
+    }
+    else
+    {
+        $lines[] = "return 'Hello world!';";
+    }
 
     return $lines;
 });
