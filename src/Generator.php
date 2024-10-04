@@ -514,10 +514,7 @@ class Generator
 
             if (array_key_exists($index + 1, $methods))
             {
-                if (! $methods[$index + 1]->isTag())
-                {
-                    $lines[] = '';
-                }
+                $lines[] = '';
             }
         }
 
