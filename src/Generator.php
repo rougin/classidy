@@ -122,7 +122,10 @@ class Generator
                     $tags[] = ' *' . ($value ? ' ' : '') . $value;
                 }
 
-                $tags[] = ' *';
+                if (count($this->tags) > 0)
+                {
+                    $tags[] = ' *';
+                }
             }
 
             foreach ($this->tags as $tag)
