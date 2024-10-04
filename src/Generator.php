@@ -173,11 +173,45 @@ class Generator
     }
 
     /**
+     * @param string $class
+     *
+     * @return string
+     */
+    protected function getBaseClass($class)
+    {
+        $names = explode('\\', $class);
+
+        $names = array_values(array_filter($names));
+
+        $name = $names[count($names) - 1];
+
+        return count($names) === 1 ? '\\' . $name : $name;
+    }
+
+    /**
      * @return \Rougin\Classidy\Output
      */
     protected function getTemplate()
     {
         return new Output(__DIR__ . '/Template.php');
+    }
+
+    /**
+     * @param string $class
+     *
+     * @return boolean
+     */
+    protected function isClassImportable($class)
+    {
+        $imported = in_array($class, $this->imports);
+
+        $names = explode('\\', $class);
+
+        $names = array_values(array_filter($names));
+
+        $hasNamespace = count($names) > 1;
+
+        return ! $imported && $hasNamespace;
     }
 
     /**
@@ -208,13 +242,14 @@ class Generator
 
             if ($class = $item->getClass())
             {
-                // Extract the base class --------
-                $names = explode('\\', $class);
+                // Extract the base class ----------
+                $name = $this->getBaseClass($class);
+                // ---------------------------------
 
-                $name = $names[count($names) - 1];
-                // -------------------------------
-
-                $this->imports[] = $class;
+                if ($this->isClassImportable($class))
+                {
+                    $this->imports[] = $class;
+                }
 
                 $argument = $name . ' ' . $argument;
             }
@@ -479,7 +514,10 @@ class Generator
 
             if (array_key_exists($index + 1, $methods))
             {
-                $lines[] = '';
+                if (! $methods[$index + 1]->isTag())
+                {
+                    $lines[] = '';
+                }
             }
         }
 
@@ -638,13 +676,14 @@ class Generator
     {
         foreach ($traits as $trait)
         {
-            // Extract the base class --------
-            $names = explode('\\', $trait);
+            // Extract the base class ----------
+            $name = $this->getBaseClass($trait);
+            // ---------------------------------
 
-            $name = $names[count($names) - 1];
-            // -------------------------------
-
-            $this->imports[] = $trait;
+            if ($this->isClassImportable($trait))
+            {
+                $this->imports[] = $trait;
+            }
 
             $lines[] = 'use ' . $name . ';';
         }
