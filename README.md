@@ -518,6 +518,41 @@ class Greet extends Greeter implements Greetable, Helloable
 }
 ```
 
+### Setting an empty class
+
+The `setEmpty` method can be used to clear any methods and properties previously specified. This maybe useful when generating empty classes without specifying a new `Classidy` class:
+
+``` php
+// index.php
+
+// ...
+
+$class->setEmpty();
+
+// ...
+```
+
+``` php
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Greeter;
+
+/**
+ * Sample class for Acme.
+ *
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet extends Greeter implements Greetable, Helloable
+{
+}
+```
+
 ## Changelog
 
 Please see [CHANGELOG][link-changelog] for more information what has changed recently.

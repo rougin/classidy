@@ -64,13 +64,69 @@ class ClassTest extends Testcase
     /**
      * @return void
      */
+    public function test_with_empty_class()
+    {
+        $expected = $this->find('WithEmpty');
+
+        $class = $this->newClass('WithEmpty');
+        $text = 'A class with all features to Classidy.';
+        $class->setComment($text);
+
+        $extends = 'Rougin\Classidy\Fixture\Classes\WithMethod';
+        $class->extendsTo($extends);
+
+        $interface = 'Rougin\Classidy\Fixture\Classable';
+        $class->addInterface($interface);
+
+        $class->addTrait('Rougin\Classidy\Fixture\Traitable');
+
+        $class->addIntegerProperty('type');
+
+        $method = new Method('test');
+        $method->setReturn('void')->asTag();
+        $class->addMethod($method);
+
+        $method = new Method('greet');
+        $method->addStringArgument('name')
+            ->withDefaultValue('world');
+        $method->setReturn('string');
+        $method->setCodeEval(function ($name = 'world')
+        {
+            return 'Hello ' . $name . '!';
+        });
+        $class->addMethod($method);
+
+        $method = new Method('sample');
+        $method->setReturn('string');
+        $method->setCodeLine(function ($lines)
+        {
+            $lines[] = '$text = \'text\';';
+            $lines[] = '';
+            $lines[] = 'return \'This is a sample \' . $text;';
+
+            return $lines;
+        });
+        $class->addMethod($method);
+
+        $class->setEmpty();
+
+        $actual = $this->make($class);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @return void
+     */
     public function test_class_with_empty_construct()
     {
         $expected = $this->find('WithEmptyConstruct');
 
         $class = $this->newClass('WithEmptyConstruct');
 
-        $actual = $this->make($class->setConstruct());
+        $method = new Method('__construct');
+
+        $actual = $this->make($class->addMethod($method));
 
         $this->assertEquals($expected, $actual);
     }

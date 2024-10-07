@@ -395,9 +395,13 @@ class Classidy
     /**
      * @return self
      */
-    public function setConstruct()
+    public function setEmpty()
     {
-        $this->methods[] = new Method('__construct');
+        $this->methods = array();
+
+        $this->props = array();
+
+        $this->traits = array();
 
         return $this;
     }
