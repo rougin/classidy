@@ -62,4 +62,29 @@ class ArgumentTest extends Testcase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @return void
+     */
+    public function test_argument_without_typed_declared()
+    {
+        $expected = $this->find('WithoutTypeDeclared');
+
+        $class = $this->newClass('WithoutTypeDeclared');
+
+        $method = new Method('hello');
+        $method->setReturn('string');
+        $name = 'Rougin\Classidy\Fixture\Classes\WithMethod';
+        $method->addClassArgument('method', $name)
+            ->withoutTypeDeclared();
+
+        $method->setCodeEval(function (WithMethod $method)
+        {
+            return $method->hello();
+        });
+
+        $actual = $this->make($class->addMethod($method));
+
+        $this->assertEquals($expected, $actual);
+    }
 }

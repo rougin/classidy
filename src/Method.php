@@ -264,4 +264,20 @@ class Method
 
         return $this;
     }
+
+    /**
+     * @return self
+     */
+    public function withoutTypeDeclared()
+    {
+        $last = count($this->args) - 1;
+
+        $argument = $this->args[$last];
+
+        $argument->setTypeDeclared(false);
+
+        $this->args[$last] = $argument;
+
+        return $this;
+    }
 }

@@ -240,6 +240,8 @@ class Generator
 
             $argument .= $item->getName() . $default;
 
+            $name = null;
+
             if ($class = $item->getClass())
             {
                 // Extract the base class ----------
@@ -250,7 +252,10 @@ class Generator
                 {
                     $this->imports[] = $class;
                 }
+            }
 
+            if ($name && $item->isTypeDeclared())
+            {
                 $argument = $name . ' ' . $argument;
             }
 

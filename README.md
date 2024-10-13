@@ -334,6 +334,56 @@ class Greet extends Greeter implements Greetable, Helloable
 }
 ```
 
+To add a class argument without being its type declared, add `withoutTypeDeclared` after `addClassArgument`:
+
+``` php
+// index.php
+
+// ...
+
+$method = new Method('greet');
+$method->addClassArgument('test', 'Acme\Test')
+    ->withoutTypeDeclared();
+$method->setReturn('string');
+$method->setCodeEval(function ($test)
+{
+    return $test->hello();
+});
+$class->addMethod($method);
+
+// ...
+```
+
+``` bash
+$ php index.php
+
+<?php
+
+namespace Acme;
+
+use Acme\Hello\Greeter;
+
+/**
+ * Sample class for Acme.
+ *
+ * @package Acme
+ *
+ * @author John Doe <jdoe@acme.com>
+ */
+class Greet extends Greeter implements Greetable, Helloable
+{
+    /**
+     * @param \Acme\Test $test
+     *
+     * @return string
+     */
+    public function greet($test)
+    {
+        return $test->hello();
+    }
+}
+```
+
 A method can also be defined as `protected` or `private`:
 
 ``` php

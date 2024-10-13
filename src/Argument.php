@@ -29,7 +29,12 @@ class Argument
     /**
      * @var string|null
      */
-    protected $declare = null;
+    protected $dataType = null;
+
+    /**
+     * @var boolean
+     */
+    protected $declared = false;
 
     /**
      * @var mixed|null
@@ -105,9 +110,9 @@ class Argument
             $type = '\\' . $this->class;
         }
 
-        if ($this->declare)
+        if ($this->dataType)
         {
-            $type = $this->declare;
+            $type = $this->dataType;
         }
 
         if ($this->isNull())
@@ -212,6 +217,14 @@ class Argument
     }
 
     /**
+     * @return boolean
+     */
+    public function isTypeDeclared()
+    {
+        return $this->declared;
+    }
+
+    /**
      * @param string $class
      *
      * @return self
@@ -220,17 +233,19 @@ class Argument
     {
         $this->class = $class;
 
+        $this->setTypeDeclared(true);
+
         return $this;
     }
 
     /**
-     * @param string $declare
+     * @param string $dataType
      *
      * @return self
      */
-    public function setDataType($declare)
+    public function setDataType($dataType)
     {
-        $this->declare = $declare;
+        $this->dataType = $dataType;
 
         return $this;
     }
@@ -243,6 +258,18 @@ class Argument
     public function setDefaultValue($default)
     {
         $this->default = $default;
+
+        return $this;
+    }
+
+    /**
+     * @param boolean $declared
+     *
+     * @return self
+     */
+    public function setTypeDeclared($declared = true)
+    {
+        $this->declared = $declared;
 
         return $this;
     }
