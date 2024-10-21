@@ -9,8 +9,6 @@ namespace Rougin\Classidy;
  */
 class Classidy
 {
-    use Comment;
-
     /**
      * @var string|null
      */
@@ -293,6 +291,14 @@ class Classidy
     /**
      * @return string|null
      */
+    public function getComment()
+    {
+        return $this->comment;
+    }
+
+    /**
+     * @return string|null
+     */
     public function getExtends()
     {
         return $this->extends;
@@ -388,6 +394,23 @@ class Classidy
         }
 
         $this->author = trim($name . ' ' . $email);
+
+        return $this;
+    }
+
+    /**
+     * @param string|string[] $comment
+     *
+     * @return self
+     */
+    public function setComment($comment)
+    {
+        if (is_array($comment))
+        {
+            $comment = implode("\n", $comment);
+        }
+
+        $this->comment = $comment;
 
         return $this;
     }
