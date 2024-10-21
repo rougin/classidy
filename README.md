@@ -10,7 +10,7 @@ A package that creates PHP classes using PHP. That's it.
 
 ## Installation
 
-Install `Classify` through [Composer](https://getcomposer.org/):
+Install `Classidy` through [Composer](https://getcomposer.org/):
 
 ``` bash
 $ composer require rougin/classidy
