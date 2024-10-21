@@ -222,6 +222,22 @@ class Classidy
     /**
      * @return self
      */
+    public function asProtected()
+    {
+        $last = count($this->props) - 1;
+
+        $property = $this->props[$last];
+
+        $property->asProtected();
+
+        $this->props[$last] = $property;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
     public function asPublic()
     {
         $last = count($this->props) - 1;
