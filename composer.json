@@ -1,7 +1,7 @@
 {
   "name": "rougin/classidy",
   "description": "Create PHP classes using PHP.",
-  "keywords": ["class-generator", "php-generator"],
+  "keywords": [ "class-generator", "php-generator" ],
   "homepage": "https://roug.in/classidy/",
   "license": "MIT",
   "authors":
