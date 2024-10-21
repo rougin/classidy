@@ -28,9 +28,10 @@ class ClassTest extends Testcase
 
         $class->addTrait('Rougin\Classidy\Fixture\Traitable');
 
-        $class->addIntegerProperty('type');
+        $class->addIntegerProperty('type')->asProtected();
 
         $method = new Method('test');
+        $method->asPublic();
         $method->setReturn('void')->asTag();
         $class->addMethod($method);
 
@@ -69,7 +70,7 @@ class ClassTest extends Testcase
         $expected = $this->find('WithEmpty');
 
         $class = $this->newClass('WithEmpty');
-        $text = 'A class with all features to Classidy.';
+        $text = array('A class with all features to Classidy.');
         $class->setComment($text);
 
         $extends = 'Rougin\Classidy\Fixture\Classes\WithMethod';

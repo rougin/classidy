@@ -9,8 +9,6 @@ namespace Rougin\Classidy;
  */
 class Classidy
 {
-    use Comment;
-
     /**
      * @var string|null
      */
@@ -224,6 +222,22 @@ class Classidy
     /**
      * @return self
      */
+    public function asProtected()
+    {
+        $last = count($this->props) - 1;
+
+        $property = $this->props[$last];
+
+        $property->asProtected();
+
+        $this->props[$last] = $property;
+
+        return $this;
+    }
+
+    /**
+     * @return self
+     */
     public function asPublic()
     {
         $last = count($this->props) - 1;
@@ -288,6 +302,14 @@ class Classidy
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getComment()
+    {
+        return $this->comment;
     }
 
     /**
@@ -388,6 +410,23 @@ class Classidy
         }
 
         $this->author = trim($name . ' ' . $email);
+
+        return $this;
+    }
+
+    /**
+     * @param string|string[] $comment
+     *
+     * @return self
+     */
+    public function setComment($comment)
+    {
+        if (is_array($comment))
+        {
+            $comment = implode("\n", $comment);
+        }
+
+        $this->comment = $comment;
 
         return $this;
     }
