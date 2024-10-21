@@ -9,8 +9,6 @@ namespace Rougin\Classidy;
  */
 class Method
 {
-    use Element;
-
     const VISIBLE_PUBLIC = 0;
 
     const VISIBLE_PROTECTED = 1;
