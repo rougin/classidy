@@ -7,6 +7,6 @@ namespace Rougin\Classidy\Fixture;
  *
  * @author Rougin Gutib <rougingutib@gmail.com>
  */
-interface Miserable
+interface Classable
 {
 }
