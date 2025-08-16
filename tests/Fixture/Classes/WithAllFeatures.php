@@ -2,7 +2,7 @@
 
 namespace Rougin\Classidy\Fixture\Classes;
 
-use Rougin\Classidy\Fixture\Miserable;
+use Rougin\Classidy\Fixture\Classable;
 use Rougin\Classidy\Fixture\Traitable;
 
 /**
@@ -14,7 +14,7 @@ use Rougin\Classidy\Fixture\Traitable;
  *
  * @author Rougin Gutib <rougingutib@gmail.com>
  */
-class WithAllFeatures extends WithMethod implements Miserable
+class WithAllFeatures extends WithMethod implements Classable
 {
     use Traitable;
 
