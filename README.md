@@ -91,7 +91,7 @@ The `setCodeLine` method can also be used for specifying code of a method in a l
 
 $shout = false;
 
-$method->setCodeEval(function ($lines) use ($shout)
+$method->setCodeLine(function ($lines) use ($shout)
 {
     if ($shout)
     {
