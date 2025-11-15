@@ -16,7 +16,7 @@ Install `Classidy` through [Composer](https://getcomposer.org/):
 $ composer require rougin/classidy
 ```
 
-## Basic Usage
+## Basic usage
 
 ### Creating a simple class
 
@@ -607,15 +607,9 @@ class Greet extends Greeter implements Greetable, Helloable
 
 Please see [CHANGELOG][link-changelog] for more information what has changed recently.
 
-## Testing
+## Contributing
 
-``` bash
-$ composer test
-```
-
-## Credits
-
-- [All contributors][link-contributors]
+See [CONTRIBUTING][link-contributing] on how to contribute.
 
 ## License
 
@@ -629,7 +623,7 @@ The MIT License (MIT). Please see [LICENSE][link-license] for more information.
 
 [link-build]: https://github.com/rougin/classidy/actions
 [link-changelog]: https://github.com/rougin/classidy/blob/master/CHANGELOG.md
-[link-contributors]: https://github.com/rougin/classidy/contributors
+[link-contributing]: https://github.com/rougin/classidy/blob/master/CONTRIBUTING.md
 [link-coverage]: https://app.codecov.io/gh/rougin/classidy
 [link-downloads]: https://packagist.org/packages/rougin/classidy
 [link-license]: https://github.com/rougin/classidy/blob/master/LICENSE.md
