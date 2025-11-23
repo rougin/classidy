@@ -8,6 +8,29 @@
 
 A package that creates PHP classes using PHP. That's it.
 
+``` php
+use Rougin\Classidy\Classidy;
+use Rougin\Classidy\Generator;
+use Rougin\Classidy\Method;
+
+$class = new Classidy;
+
+$class->setName('Hello');
+
+$method = new Method('hi');
+
+$method->setCodeEval(function ()
+{
+    return 'Hello world!';
+});
+
+$class->addMethod($method);
+
+$maker = new Generator;
+
+echo $maker->make($class);
+```
+
 ## Installation
 
 Install `Classidy` through [Composer](https://getcomposer.org/):
